@@ -375,7 +375,7 @@ export default function RegexLabPage() {
                                 <li>· Usa ^ y $ para evitar coincidencias parciales en cada línea.</li>
                                 <li>· Activa m (multilínea) para validar listas o logs completos.</li>
                                 <li>· Combina lookaheads: (?=.*[A-Z])(?=.*\\d) para requisitos compuestos.</li>
-                                <li>· El botón "Explicar con IA" desglosa tokens como \\d, \\b, ?= y cuantificadores.</li>
+                                <li>· El botón &quot;Explicar con IA&quot; desglosa tokens como \\d, \\b, ?= y cuantificadores.</li>
                             </ul>
                         </div>
                     </aside>

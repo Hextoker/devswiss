@@ -142,7 +142,7 @@ export default function CronPredictorPage() {
 
                             <p className="mt-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-3 text-sm leading-relaxed text-emerald-100">
                                 {humanText}
-                                {!isValid && <span className="ml-2 text-amber-200 underline decoration-dotted">Pulsa "Explicar con IA" para ver cómo corregirlo.</span>}
+                                {!isValid && <span className="ml-2 text-amber-200 underline decoration-dotted">Pulsa &quot;Explicar con IA&quot; para ver cómo corregirlo.</span>}
                             </p>
 
                             <div className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-3">

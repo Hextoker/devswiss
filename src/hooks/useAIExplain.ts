@@ -71,6 +71,20 @@ export const useAIExplain = (): AIExplainResponse => {
                 return;
             }
 
+            if (lowerTool.includes('hash')) {
+                setExplanation(
+                    [
+                        'Una función de resumen (hash) toma una entrada y devuelve una huella de longitud fija.',
+                        '- Es determinística: la misma entrada produce el mismo hash.',
+                        '- Es unidireccional: no existe una “inversa” para recuperar la contraseña; solo puedes verificar comparando hashes.',
+                        '- Resistente a colisiones: debería ser difícil encontrar dos entradas con el mismo hash (MD5 ya no cumple esto).',
+                        '- Para contraseñas se agrega salt y se usan algoritmos lentos (Argon2/Bcrypt) para frenar ataques de fuerza bruta.',
+                        '- SHA/MD5 son rápidos y útiles para integridad, pero no para almacenar passwords sin un esquema adicional (PBKDF2, HKDF, etc).',
+                    ].join('\n')
+                );
+                return;
+            }
+
             if (lowerTool.includes('glass')) {
                 const preview = content.trim() || 'Sin CSS generado aún.';
                 setExplanation(

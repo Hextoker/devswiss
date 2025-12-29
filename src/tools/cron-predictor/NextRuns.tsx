@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 type CronField = 'minute' | 'hour' | 'dayOfMonth' | 'month' | 'dayOfWeek';
 
@@ -322,14 +322,7 @@ interface NextRunsProps {
 }
 
 export const NextRuns: React.FC<NextRunsProps> = ({ parseResult }) => {
-    const [runs, setRuns] = useState<Date[]>([]);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const { runs: computedRuns, error: runsError } = getNextRuns(parseResult, 5);
-        setRuns(computedRuns);
-        setError(runsError ?? null);
-    }, [parseResult]);
+    const { runs, error } = useMemo(() => getNextRuns(parseResult, 5), [parseResult]);
 
     const hasContent = useMemo(() => parseResult.expression.trim().length > 0, [parseResult.expression]);
 
