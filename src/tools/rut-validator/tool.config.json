@@ -1,0 +1,7 @@
+{
+  "id": "rut-validator",
+  "name": "RUT Validator",
+  "description": "Valida, formatea y genera RUTs chilenos con cálculo del DV vía Módulo 11, autocompletado y copias rápidas.",
+  "path": "/tools/rut-validator",
+  "keywords": ["rut", "dv", "chile", "validator", "format", "generator"]
+}

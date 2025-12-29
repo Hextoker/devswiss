@@ -11,20 +11,12 @@ type Tool = {
     keywords?: string[];
 };
 
-const tools: Tool[] = [
-    {
-        id: 'json-master',
-        name: 'JSON Master',
-        description: 'Formatea, minifica y valida JSON 100% en tu navegador.',
-        path: '/tools/json-master',
-        keywords: ['json', 'format', 'minify', 'validar'],
-    },
-];
-
 export function CommandPalette() {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
+    const [tools, setTools] = useState<Tool[]>([]);
+    const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -47,6 +39,23 @@ export function CommandPalette() {
         return () => document.removeEventListener('keydown', down);
     }, []);
 
+    useEffect(() => {
+        const fetchTools = async () => {
+            try {
+                setLoading(true);
+                const res = await fetch('/api/tools');
+                if (!res.ok) throw new Error('Failed to load tools');
+                const data: Tool[] = await res.json();
+                setTools(data);
+            } catch (err) {
+                console.error('Command palette failed to load tools', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTools();
+    }, []);
+
     const results = useMemo(() => {
         const q = query.trim().toLowerCase();
         if (!q) return tools;
@@ -56,7 +65,7 @@ export function CommandPalette() {
                 .toLowerCase();
             return haystack.includes(q);
         });
-    }, [query]);
+    }, [query, tools]);
 
     const handleSelect = (tool: Tool) => {
         setIsOpen(false);
@@ -95,7 +104,9 @@ export function CommandPalette() {
                     </kbd>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
-                    {results.length === 0 ? (
+                    {loading ? (
+                        <p className="p-4 text-center text-sm text-zinc-500">Cargando herramientas...</p>
+                    ) : results.length === 0 ? (
                         <p className="p-4 text-center text-sm text-zinc-500">
                             No results found. Start typing to search tools.
                         </p>

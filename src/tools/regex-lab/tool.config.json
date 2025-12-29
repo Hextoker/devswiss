@@ -1,0 +1,7 @@
+{
+  "id": "regex-lab",
+  "name": "Regex Lab",
+  "description": "Laboratorio interactivo para crear, visualizar y explicar expresiones regulares con IA.",
+  "path": "/tools/regex-lab",
+  "keywords": ["regex", "expresiones regulares", "validar", "visualizar", "ia", "educativo"]
+}

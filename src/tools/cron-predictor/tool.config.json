@@ -1,0 +1,7 @@
+{
+  "id": "cron-predictor",
+  "name": "Cron Predictor",
+  "description": "Predice y genera expresiones cron con traducción humana en vivo, presets y próximas ejecuciones.",
+  "path": "/tools/cron-predictor",
+  "keywords": ["cron", "scheduler", "automation", "productivity"]
+}

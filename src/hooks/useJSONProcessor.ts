@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 interface ValidationResult {
     isValid: boolean;
@@ -30,14 +30,11 @@ const formatErrorMessage = (input: string, rawMessage: string): string => {
 export const useJSONProcessor = () => {
     const [jsonInput, setJsonInput] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
-    const [indentSize, setIndentSize] = useState<number>(2);
-
-    useEffect(() => {
+    const [indentSize, setIndentSize] = useState<number>(() => {
+        if (typeof window === 'undefined') return 2;
         const savedIndent = localStorage.getItem(STORAGE_KEY);
-        if (savedIndent) {
-            setIndentSize(Number(savedIndent));
-        }
-    }, []);
+        return savedIndent ? Number(savedIndent) : 2;
+    });
 
     const setPreferredIndent = useCallback((size: number) => {
         setIndentSize(size);

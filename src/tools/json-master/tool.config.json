@@ -1,0 +1,7 @@
+{
+  "id": "json-master",
+  "name": "JSON Master",
+  "description": "Formatea, minifica y valida JSON 100% en tu navegador.",
+  "path": "/tools/json-master",
+  "keywords": ["json", "format", "minify", "validar", "lint", "beautify"]
+}

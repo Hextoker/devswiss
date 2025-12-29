@@ -1,0 +1,7 @@
+{
+  "id": "glassmorphism-gen",
+  "name": "Glassmorphism Generator",
+  "description": "Crea tarjetas de vidrio esmerilado con blur, saturación y opacidad en vivo; copia el CSS en un clic.",
+  "path": "/tools/glassmorphism-gen",
+  "keywords": ["css", "glass", "blur", "backdrop-filter", "ui", "glassmorphism"]
+}

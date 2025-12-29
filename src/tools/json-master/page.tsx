@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ExplainButton } from '@/components/ExplainButton';
+import { ExplainButton } from '@/components/shared/ExplainButton';
 import { useJSONProcessor } from '@/hooks/useJSONProcessor';
 
 const formatBytes = (bytes: number) => {
