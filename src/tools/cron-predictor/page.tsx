@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ExplainButton } from '@/components/shared/ExplainButton';
 import { CronParseResult, NextRuns, describeCron, parseCronExpression } from './NextRuns';
 
@@ -29,7 +29,7 @@ const PRESETS: { label: string; values: Record<CronFieldKey, string> }[] = [
     { label: 'Primero de mes 08:00', values: { minute: '0', hour: '8', dayOfMonth: '1', month: '*', dayOfWeek: '*' } },
 ];
 
-const sanitize = (value: string) => value.replace(/[^\d*/,\-\s]/g, '').trim();
+const sanitize = (value: string) => value.replace(/[^\d*/?,@\-\s]/g, '').trim();
 
 const buildAIContext = (expression: string, human: string, parseResult: CronParseResult) => {
     const lines = [
@@ -51,6 +51,7 @@ const buildAIContext = (expression: string, human: string, parseResult: CronPars
 };
 
 export default function CronPredictorPage() {
+    const hasPrefilled = useRef(false);
     const [fields, setFields] = useState<Record<CronFieldKey, string>>({
         minute: '0',
         hour: '22',
@@ -77,6 +78,27 @@ export default function CronPredictorPage() {
     const handlePreset = (values: Record<CronFieldKey, string>) => {
         setFields(values);
     };
+
+    useEffect(() => {
+        if (hasPrefilled.current) return;
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        const expressionParam = params.get('expression');
+        if (!expressionParam) return;
+
+        const parts = expressionParam.trim().split(/\s+/);
+        if (parts.length < 5) return;
+
+        const [minute, hour, dayOfMonth, month, dayOfWeek] = parts;
+        setFields({
+            minute: sanitize(minute),
+            hour: sanitize(hour),
+            dayOfMonth: sanitize(dayOfMonth),
+            month: sanitize(month),
+            dayOfWeek: sanitize(dayOfWeek),
+        });
+        hasPrefilled.current = true;
+    }, []);
 
     const handleCopy = async () => {
         try {

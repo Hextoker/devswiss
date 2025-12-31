@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ExplainButton } from '@/components/shared/ExplainButton';
 import { RutValidationResult, calculateDV, formatRut, generateRandomRut, validateRut } from './utils';
 
@@ -14,6 +14,7 @@ const STATUS_STYLES = {
 };
 
 export default function RutValidatorPage() {
+    const hasPrefilled = useRef(false);
     const [input, setInput] = useState<string>('12.345.678-5');
     const [validation, setValidation] = useState<RutValidationResult>(() => validateRut('12.345.678-5'));
     const [copyState, setCopyState] = useState<Record<FormatKey, CopyState>>({
@@ -22,11 +23,11 @@ export default function RutValidatorPage() {
         compact: 'idle',
     });
 
-    const handleInputChange = (value: string) => {
+    const handleInputChange = useCallback((value: string) => {
         const cleaned = value.replace(/[^0-9kK.\-]/g, '');
         setInput(cleaned);
         setValidation(validateRut(cleaned));
-    };
+    }, []);
 
     const handleCopy = async (key: FormatKey) => {
         const value = validation.formatted[key];
@@ -55,6 +56,16 @@ export default function RutValidatorPage() {
         setInput(rut.formatted.pretty);
         setValidation(validateRut(rut.formatted.pretty));
     };
+
+    useEffect(() => {
+        if (hasPrefilled.current) return;
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        const incoming = params.get('value');
+        if (!incoming) return;
+        hasPrefilled.current = true;
+        handleInputChange(incoming);
+    }, [handleInputChange]);
 
     const statusTone = validation.isValid ? 'valid' : validation.missingDV ? 'missing' : 'error';
 

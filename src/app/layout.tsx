@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // or whatever default
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CommandPalette } from "@/components/CommandPalette";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = localFont({
+  src: "../../public/fonts/Inter.var.woff2",
+  display: "swap",
+  variable: "--font-inter",
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: "DevSwiss",
@@ -18,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans`} suppressHydrationWarning>
         <ThemeProvider>
           <CommandPalette />
           <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">

@@ -11,6 +11,7 @@ const formatBytes = (bytes: number) => {
 };
 
 export default function JSONMasterPage() {
+    const hasPrefilled = React.useRef(false);
     const {
         jsonInput,
         error,
@@ -31,6 +32,16 @@ export default function JSONMasterPage() {
         setCopyState(ok ? 'copied' : 'error');
         setTimeout(() => setCopyState('idle'), 1800);
     };
+
+    React.useEffect(() => {
+        if (hasPrefilled.current) return;
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        const payload = params.get('payload');
+        if (!payload) return;
+        hasPrefilled.current = true;
+        updateInput(payload);
+    }, [updateInput]);
 
     return (
         <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-black via-zinc-950 to-zinc-900 text-zinc-100">

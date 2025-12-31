@@ -1,22 +1,27 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { detectQuickAction, QuickAction } from '@/data/intentions';
+import { tools as toolList, ToolMeta } from '@/data/tools';
 
-type Tool = {
-    id: string;
-    name: string;
-    description: string;
-    path: string;
-    keywords?: string[];
-};
+function CommandGroup({ heading, children }: { heading: string; children: ReactNode }) {
+    return (
+        <div className="border-b border-zinc-900 bg-zinc-950/70">
+            <div className="flex items-center gap-2 border-b border-emerald-500/30 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+                <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,0.22)]" />
+                {heading}
+            </div>
+            {children}
+        </div>
+    );
+}
 
 export function CommandPalette() {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
-    const [tools, setTools] = useState<Tool[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [tools] = useState<ToolMeta[]>(toolList);
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -39,23 +44,6 @@ export function CommandPalette() {
         return () => document.removeEventListener('keydown', down);
     }, []);
 
-    useEffect(() => {
-        const fetchTools = async () => {
-            try {
-                setLoading(true);
-                const res = await fetch('/api/tools');
-                if (!res.ok) throw new Error('Failed to load tools');
-                const data: Tool[] = await res.json();
-                setTools(data);
-            } catch (err) {
-                console.error('Command palette failed to load tools', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTools();
-    }, []);
-
     const results = useMemo(() => {
         const q = query.trim().toLowerCase();
         if (!q) return tools;
@@ -67,10 +55,22 @@ export function CommandPalette() {
         });
     }, [query, tools]);
 
-    const handleSelect = (tool: Tool) => {
+    const quickAction = useMemo<QuickAction | null>(() => detectQuickAction(query), [query]);
+
+    const closePalette = () => {
         setIsOpen(false);
         setQuery('');
+    };
+
+    const handleSelect = (tool: ToolMeta) => {
+        closePalette();
         router.push(tool.path);
+    };
+
+    const handleQuickAction = () => {
+        if (!quickAction) return;
+        closePalette();
+        router.push(quickAction.path);
     };
 
     if (!isOpen) return null;
@@ -90,9 +90,15 @@ export function CommandPalette() {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter' && results.length > 0) {
+                            if (e.key === 'Enter') {
                                 e.preventDefault();
-                                handleSelect(results[0]);
+                                if (quickAction) {
+                                    handleQuickAction();
+                                    return;
+                                }
+                                if (results.length > 0) {
+                                    handleSelect(results[0]);
+                                }
                             }
                         }}
                         className="flex-1 bg-transparent text-lg outline-none placeholder:text-zinc-600"
@@ -104,17 +110,30 @@ export function CommandPalette() {
                     </kbd>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
-                    {loading ? (
-                        <p className="p-4 text-center text-sm text-zinc-500">Cargando herramientas...</p>
-                    ) : results.length === 0 ? (
+                    {results.length === 0 && !quickAction ? (
                         <p className="p-4 text-center text-sm text-zinc-500">
                             No results found. Start typing to search tools.
                         </p>
                     ) : (
-                        <ul className="divide-y divide-zinc-900">
-                            {results.map((tool) => (
-                                <li key={tool.id}>
+                        <>
+                            {quickAction && (
+                                <CommandGroup heading="Acción Instantánea">
                                     <button
+                                        onClick={handleQuickAction}
+                                        className="flex w-full items-start gap-3 px-4 py-3 text-left transition hover:bg-emerald-500/10 focus:bg-emerald-500/10"
+                                    >
+                                        <div className="mt-0.5 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,0.18)]" />
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-semibold text-emerald-100">{quickAction.title}</p>
+                                            <p className="text-xs text-emerald-200/80">{quickAction.description}</p>
+                                        </div>
+                                    </button>
+                                </CommandGroup>
+                            )}
+                            <div className="divide-y divide-zinc-900">
+                                {results.map((tool) => (
+                                    <button
+                                        key={tool.id}
                                         onClick={() => handleSelect(tool)}
                                         className="flex w-full items-start gap-3 px-4 py-3 text-left transition hover:bg-zinc-900 focus:bg-zinc-900"
                                     >
@@ -124,9 +143,9 @@ export function CommandPalette() {
                                             <p className="text-xs text-zinc-500">{tool.description}</p>
                                         </div>
                                     </button>
-                                </li>
-                            ))}
-                        </ul>
+                                ))}
+                            </div>
+                        </>
                     )}
                 </div>
             </div>

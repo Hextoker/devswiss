@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { RegexVisualizer, RegexMatch } from './RegexVisualizer';
 import { ExplainButton } from '@/components/shared/ExplainButton';
 import { useAIExplain } from '@/hooks/useAIExplain';
@@ -57,6 +57,7 @@ https://devswiss.com/tools
 ClaveMuySegura$99`;
 
 export default function RegexLabPage() {
+    const hasPrefilled = useRef(false);
     const [pattern, setPattern] = useState<string>(presets[0].pattern);
     const [testText, setTestText] = useState<string>(defaultText);
     const [flags, setFlags] = useState<Flags>({ g: true, i: true, m: false });
@@ -171,6 +172,30 @@ export default function RegexLabPage() {
             setAiNote('Patrón propuesto aplicado. Ajusta lo que necesites y pruébalo en el texto.');
         }
     };
+
+    useEffect(() => {
+        if (hasPrefilled.current) return;
+        if (typeof window === 'undefined') return;
+
+        const params = new URLSearchParams(window.location.search);
+        const incomingPattern = params.get('pattern');
+        const incomingTest = params.get('test');
+        const incomingFlags = params.get('flags');
+
+        if (!incomingPattern && !incomingTest && !incomingFlags) return;
+
+        if (incomingPattern) setPattern(incomingPattern);
+        if (incomingTest) setTestText(incomingTest);
+        if (incomingFlags) {
+            setFlags({
+                g: incomingFlags.includes('g'),
+                i: incomingFlags.includes('i'),
+                m: incomingFlags.includes('m'),
+            });
+        }
+
+        hasPrefilled.current = true;
+    }, []);
 
     return (
         <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-50">
