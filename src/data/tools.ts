@@ -1,0 +1,113 @@
+import { Tool } from '@/types';
+
+export type ToolCategory = 'Seguridad' | 'Datos' | 'Diseño' | 'Automatización' | 'DevTools';
+
+export type ToolMeta = Tool & {
+    category: ToolCategory;
+    icon:
+        | 'shield'
+        | 'hash'
+        | 'regex'
+        | 'json'
+        | 'rut'
+        | 'clock'
+        | 'glass';
+    accent: 'emerald' | 'cyan' | 'amber' | 'violet' | 'blue';
+    tagline: string;
+    spotlight?: boolean;
+};
+
+export const toolCategories: ToolCategory[] = [
+    'Seguridad',
+    'Datos',
+    'Diseño',
+    'Automatización',
+    'DevTools',
+];
+
+export const tools: ToolMeta[] = [
+    {
+        id: 'security-audit',
+        name: 'Security Audit',
+        description:
+            'Detecta el tipo de hash, su nivel de seguridad y recibe un veredicto rápido antes de exponer credenciales.',
+        path: '/tools/security-audit',
+        category: 'Seguridad',
+        icon: 'shield',
+        accent: 'emerald',
+        tagline: 'Lectura de riesgo y mejores prácticas en segundos',
+        keywords: ['seguridad', 'hash', 'auditoria', 'bcrypt', 'argon2'],
+        spotlight: true,
+    },
+    {
+        id: 'hash-generator',
+        name: 'Hash Generator',
+        description:
+            'Genera hashes seguros (Argon2, Bcrypt, SHA) 100% en el navegador con guías educativas.',
+        path: '/tools/hash-generator',
+        category: 'Seguridad',
+        icon: 'hash',
+        accent: 'emerald',
+        tagline: 'Hashes listos para producción y pruebas rápidas',
+        keywords: ['hash', 'bcrypt', 'argon2', 'sha256', 'sha512', 'md5', 'seguridad', 'cryptografia'],
+    },
+    {
+        id: 'regex-lab',
+        name: 'Regex Lab',
+        description:
+            'Laboratorio interactivo para crear, visualizar y explicar expresiones regulares con IA.',
+        path: '/tools/regex-lab',
+        category: 'DevTools',
+        icon: 'regex',
+        accent: 'cyan',
+        tagline: 'Prueba patrones con vista previa y explicaciones',
+        keywords: ['regex', 'expresiones regulares', 'validar', 'visualizar', 'ia', 'educativo'],
+    },
+    {
+        id: 'json-master',
+        name: 'JSON Master',
+        description: 'Formatea, minifica y valida JSON 100% en tu navegador.',
+        path: '/tools/json-master',
+        category: 'Datos',
+        icon: 'json',
+        accent: 'blue',
+        tagline: 'Lint, minify y validación sin enviar tus datos',
+        keywords: ['json', 'format', 'minify', 'validar', 'lint', 'beautify'],
+    },
+    {
+        id: 'rut-validator',
+        name: 'RUT Validator',
+        description:
+            'Valida, formatea y genera RUTs chilenos con cálculo del DV vía Módulo 11, autocompletado y copias rápidas.',
+        path: '/tools/rut-validator',
+        category: 'Datos',
+        icon: 'rut',
+        accent: 'amber',
+        tagline: 'DV correcto, formateo automático y generación en vivo',
+        keywords: ['rut', 'dv', 'chile', 'validator', 'format', 'generator'],
+    },
+    {
+        id: 'cron-predictor',
+        name: 'Cron Predictor',
+        description:
+            'Predice y genera expresiones cron con traducción humana en vivo, presets y próximas ejecuciones.',
+        path: '/tools/cron-predictor',
+        category: 'Automatización',
+        icon: 'clock',
+        accent: 'violet',
+        tagline: 'Cron en claro + próximos disparos listos',
+        keywords: ['cron', 'scheduler', 'automation', 'productivity'],
+    },
+    {
+        id: 'glassmorphism-gen',
+        name: 'Glassmorphism Generator',
+        description:
+            'Crea tarjetas de vidrio esmerilado con blur, saturación y opacidad en vivo; copia el CSS en un clic.',
+        path: '/tools/glassmorphism-gen',
+        category: 'Diseño',
+        icon: 'glass',
+        accent: 'cyan',
+        tagline: 'Recetas UI con presets y export CSS inmediata',
+        keywords: ['css', 'glass', 'blur', 'backdrop-filter', 'ui', 'glassmorphism'],
+    },
+];

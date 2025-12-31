@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider>
           <CommandPalette />
           <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
