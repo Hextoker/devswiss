@@ -1,6 +1,38 @@
+# 🛠️ DevSwiss: Manifesto & Business Rules
 
-Este es un proyecto de [Next.js](https://nextjs.org) creado con [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 1. Nuestra Misión
+"Centralizar la utilidad en el desarrollo web, eliminando las barreras de registro y fragmentación mediante una navaja suiza de herramientas intuitivas, privadas y potenciadas por IA que educan mientras resuelven."
 
+## 2. Objetivos Estratégicos
+Zero Fricción: Permitir que cualquier desarrollador acceda a soluciones técnicas en menos de 3 clics o una sola búsqueda.
+
+Privacidad por Diseño: Garantizar que los datos sensibles (RUTs, JSONs, Hashes) se procesen localmente y nunca toquen un servidor externo sin consentimiento.
+
+Cerrar la Brecha de Conocimiento: No solo entregar un resultado, sino explicar el "por qué" técnico mediante asistencia de IA para desarrolladores Junior y Senior.
+
+Persistencia sin Cuentas: Ofrecer una experiencia personalizada (favoritos y recientes) basada exclusivamente en almacenamiento local nativo.
+
+## 3. Reglas del Juego (Business Rules)
+Para mantener la coherencia del producto a medida que crezca, cada nueva herramienta o funcionalidad debe cumplir con estas reglas:
+
+### A. Reglas de Producto
+Ley del Registro Zero: Ninguna funcionalidad principal (validar, formatear, generar) puede estar bloqueada tras un formulario de registro o pago.
+
+Interfaz "Command-First": El buscador central es el corazón de la app; todas las herramientas deben ser invocables mediante parámetros desde la barra de búsqueda (Quick Actions).
+
+Modularidad Atómica: Cada herramienta debe ser independiente, permitiendo que la plataforma crezca sin añadir peso innecesario a otras secciones.
+
+### B. Reglas de Ingeniería (Stack Técnico)
+Client-Side First: Si la lógica puede ejecutarse en el navegador (JS/TS/WASM), debe hacerse ahí para maximizar la velocidad y privacidad.
+
+Rendimiento "Blink-Test": Los filtros del buscador y la carga de herramientas favoritas deben responder en menos de 100ms.
+
+Estado Nativo: La persistencia de preferencias debe usar la API de localStorage para asegurar que el usuario sea el único dueño de sus datos.
+
+### C. Reglas de Educación (IA)
+Contextualidad: Las explicaciones de IA no deben ser genéricas; deben basarse en los datos que el usuario tiene en pantalla (ej: explicar específicamente la expresión Regular que el usuario escribió).
+
+Tono Ayudante: La IA debe actuar como un compañero de equipo Senior: directo, técnico pero accesible, y libre de relleno innecesario.
 
 ## Comenzando
 
