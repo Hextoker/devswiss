@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { detectQuickAction, QuickAction } from '@/data/intentions';
 import { tools as toolList, ToolMeta } from '@/data/tools';
+import { useUIStore } from '@/store/useUIStore';
 
 function CommandGroup({ heading, children }: { heading: string; children: ReactNode }) {
     return (
@@ -19,7 +20,7 @@ function CommandGroup({ heading, children }: { heading: string; children: ReactN
 
 export function CommandPalette() {
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
+    const { isCommandPaletteOpen: isOpen, setCommandPaletteOpen: setIsOpen } = useUIStore();
     const [query, setQuery] = useState('');
     const [tools] = useState<ToolMeta[]>(toolList);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -28,13 +29,7 @@ export function CommandPalette() {
         const down = (e: KeyboardEvent) => {
             if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();
-                setIsOpen((open) => {
-                    const next = !open;
-                    if (next) {
-                        setTimeout(() => inputRef.current?.focus(), 0);
-                    }
-                    return next;
-                });
+                setIsOpen(!isOpen);
             }
             if (e.key === 'Escape') {
                 setIsOpen(false);
@@ -42,7 +37,13 @@ export function CommandPalette() {
         };
         document.addEventListener('keydown', down);
         return () => document.removeEventListener('keydown', down);
-    }, []);
+    }, [isOpen, setIsOpen]);
+
+    useEffect(() => {
+        if (isOpen) {
+            setTimeout(() => inputRef.current?.focus(), 0);
+        }
+    }, [isOpen]);
 
     const results = useMemo(() => {
         const q = query.trim().toLowerCase();
