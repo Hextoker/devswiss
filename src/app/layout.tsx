@@ -12,7 +12,13 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "DevSwiss",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  ),
+  title: {
+    default: "DevSwiss",
+    template: "%s | DevSwiss",
+  },
   description: "Developer Swiss Army Knife",
 };
 
