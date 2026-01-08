@@ -5,10 +5,12 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const toolPaths = [
   "/tools/rut-validator",
   "/tools/json-master",
+  "/tools/base64-lab",
   "/tools/cron-predictor",
   "/tools/regex-lab",
   "/tools/hash-generator",
   "/tools/glassmorphism-gen",
+  "/tools/jwt-inspector",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

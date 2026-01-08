@@ -1,4 +1,4 @@
-export type IntentionKey = 'rut' | 'json' | 'cron' | 'hexColor' | 'base64';
+export type IntentionKey = 'rut' | 'json' | 'cron' | 'hexColor' | 'base64' | 'jwt';
 
 export type QuickAction = {
     key: IntentionKey;
@@ -18,7 +18,9 @@ type IntentionDefinition = {
 
 const HEX_COLOR_PATTERN = '^#?(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$';
 const BASE64_PATTERN = '(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?';
-const BASE64_PATTERN_ANCHORED = `^(?=.{12,}$)${BASE64_PATTERN}$`;
+const BASE64_PATTERN_ANCHORED = `(?=.{16,}$)${BASE64_PATTERN}`;
+const DATA_URI_PATTERN = 'data:[^,\\s]*;base64,[A-Za-z0-9+/=\\s]+';
+const JWT_PATTERN = '([A-Za-z0-9_-]+)\\.([A-Za-z0-9_-]+)\\.([A-Za-z0-9_-]*)';
 
 const intentions: IntentionDefinition[] = [
     {
@@ -36,6 +38,14 @@ const intentions: IntentionDefinition[] = [
         pattern: /^\s*(\{[\s\S]*\}|\[[\s\S]*\])\s*$/,
         normalize: (value) => value.trim(),
         buildPath: (value) => `/tools/json-master?payload=${encodeURIComponent(value)}`,
+    },
+    {
+        key: 'jwt',
+        title: 'Inspeccionar JWT',
+        description: 'Abre JWT Debugger con el token listo para analizar.',
+        pattern: new RegExp(`^\\s*${JWT_PATTERN}\\s*$`),
+        normalize: (value) => value.trim(),
+        buildPath: (value) => `/tools/jwt-inspector?token=${encodeURIComponent(value)}`,
     },
     {
         key: 'cron',
@@ -56,12 +66,12 @@ const intentions: IntentionDefinition[] = [
     },
     {
         key: 'base64',
-        title: 'Cadena Base64',
-        description: 'Valida la cadena en Regex Lab con el patrón Base64 estándar.',
-        pattern: new RegExp(BASE64_PATTERN_ANCHORED),
+        title: 'Decodificar Base64',
+        description: 'Abre Base64 & Media Laboratory listo para decodificar data: o cadenas Base64.',
+        pattern: new RegExp(`^(?:${DATA_URI_PATTERN}|${BASE64_PATTERN_ANCHORED})$`, 'i'),
         normalize: (value) => value.trim(),
         buildPath: (value) =>
-            `/tools/regex-lab?pattern=${encodeURIComponent(BASE64_PATTERN_ANCHORED)}&test=${encodeURIComponent(value)}&flags=gi`,
+            `/tools/base64-lab?mode=decode&payload=${encodeURIComponent(value)}`,
     },
 ];
 

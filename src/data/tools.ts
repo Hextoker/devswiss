@@ -40,6 +40,19 @@ export const tools: ToolMeta[] = [
         spotlight: true,
     },
     {
+        id: 'jwt-inspector',
+        name: 'JWT Debugger',
+        description:
+            'Inspecciona JSON Web Tokens, valida claims criticos y detecta configuraciones inseguras en el navegador.',
+        path: '/tools/jwt-inspector',
+        category: 'Seguridad',
+        icon: 'shield',
+        accent: 'blue',
+        tagline: 'Decodifica header, payload y firma con alertas instantaneas',
+        keywords: ['jwt', 'token', 'auth', 'oauth', 'claims', 'seguridad', 'bearer'],
+        spotlight: true,
+    },
+    {
         id: 'hash-generator',
         name: 'Hash Generator',
         description:
@@ -73,6 +86,18 @@ export const tools: ToolMeta[] = [
         accent: 'blue',
         tagline: 'Lint, minify y validación sin enviar tus datos',
         keywords: ['json', 'format', 'minify', 'validar', 'lint', 'beautify'],
+    },
+    {
+        id: 'base64-lab',
+        name: 'Base64 & Media Laboratory',
+        description:
+            'Codifica y decodifica Base64, además de convertir archivos en Data URI con vista previa local.',
+        path: '/tools/base64-lab',
+        category: 'Datos',
+        icon: 'hash',
+        accent: 'cyan',
+        tagline: 'Texto, archivos y Data URI 100% en el navegador',
+        keywords: ['base64', 'data uri', 'encode', 'decode', 'imagen', 'pdf', 'client-side'],
     },
     {
         id: 'rut-validator',
