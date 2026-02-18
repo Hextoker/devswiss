@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { RegexVisualizer, RegexMatch } from './RegexVisualizer';
 import { ExplainButton } from '@/components/shared/ExplainButton';
-import { useAIExplain } from '@/hooks/useAIExplain';
 
 type Flags = {
     g: boolean;
@@ -64,7 +63,8 @@ export default function RegexLabPage() {
     const [prompt, setPrompt] = useState('');
     const [aiNote, setAiNote] = useState('');
 
-    const { generatePattern, generating, error: aiError } = useAIExplain();
+    const [aiGenerating, setAiGenerating] = useState(false);
+    const [aiError, setAiError] = useState<string | null>(null);
 
     const flagsString = useMemo(
         () => `${flags.g ? 'g' : ''}${flags.i ? 'i' : ''}${flags.m ? 'm' : ''}`,
@@ -161,15 +161,40 @@ export default function RegexLabPage() {
 
     const handleGenerate = async () => {
         setAiNote('');
+        setAiError(null);
         if (!prompt.trim()) {
             setAiNote('Describe la intención: ej. "Validar un correo corporativo con dominio propio".');
             return;
         }
+        setAiGenerating(true);
 
-        const suggestion = await generatePattern({ toolName: 'Regex Lab', content: prompt });
-        if (suggestion) {
-            setPattern(suggestion);
+        try {
+            const response = await fetch('/api/openai/regex', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt.trim() }),
+            });
+
+            const data = (await response.json()) as { pattern?: string; error?: string };
+
+            if (!response.ok) {
+                setAiError(data?.error || 'No se pudo generar la RegEx.');
+                return;
+            }
+
+            const nextPattern = data?.pattern?.trim();
+            if (!nextPattern) {
+                setAiError('La IA no devolvió un patrón válido.');
+                return;
+            }
+
+            setPattern(nextPattern);
             setAiNote('Patrón propuesto aplicado. Ajusta lo que necesites y pruébalo en el texto.');
+        } catch (err) {
+            console.error('Error al generar RegEx con IA', err);
+            setAiError('No se pudo generar la RegEx.');
+        } finally {
+            setAiGenerating(false);
         }
     };
 
@@ -203,9 +228,8 @@ export default function RegexLabPage() {
     }, []);
 
     return (
-        <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-50">
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/70 px-5 py-4 shadow-[0_12px_60px_-35px_rgba(0,0,0,0.9)]">
+        <div className="flex flex-col gap-6">
+                <header className="cyber-panel cyber-border-blue flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl bg-gradient-to-br from-cyan-500 via-emerald-500 to-blue-500 p-2 shadow-lg shadow-cyan-500/30">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3H7v18h10V3Z" /><path d="M14 7h-4" /><path d="M9 15h2" /><path d="M9 11h6" /><path d="M9 19h6" /></svg>
@@ -284,7 +308,7 @@ export default function RegexLabPage() {
                                 <div className="space-y-2 rounded-xl border border-slate-800 bg-slate-900/50 p-3">
                                     <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-400">
                                         <span>Generar con IA</span>
-                                        {generating && (
+                                        {aiGenerating && (
                                             <span className="inline-flex items-center gap-1 text-emerald-300">
                                                 <span className="h-3 w-3 animate-spin rounded-full border-2 border-emerald-400 border-t-transparent" />
                                                 Pensando...
@@ -300,7 +324,7 @@ export default function RegexLabPage() {
                                     <div className="flex flex-wrap items-center justify-between gap-2">
                                         <button
                                             onClick={handleGenerate}
-                                            disabled={generating}
+                                            disabled={aiGenerating}
                                             className="inline-flex items-center gap-2 rounded-lg border border-emerald-400/50 bg-emerald-500/15 px-3 py-2 text-sm font-semibold text-emerald-100 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-500/25 disabled:opacity-60"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
@@ -410,7 +434,6 @@ export default function RegexLabPage() {
                         </div>
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

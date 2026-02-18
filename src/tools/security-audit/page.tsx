@@ -196,9 +196,8 @@ export default function SecurityAuditPage() {
     };
 
     return (
-        <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-950 via-slate-950 to-black text-slate-50">
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/80 px-5 py-4 shadow-[0_20px_80px_-50px_rgba(0,0,0,0.85)]">
+        <div className="flex flex-col gap-6">
+                <header className="cyber-panel cyber-border-green flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl bg-gradient-to-br from-emerald-500 via-amber-500 to-red-500 p-2 shadow-lg shadow-emerald-500/25">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 10 4-4" /><path d="m12 10-4-4" /><path d="m12 14 4 4" /><path d="m12 14-4 4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="M4 12h2" /><path d="M18 12h2" /><circle cx="12" cy="12" r="6" /></svg>
@@ -225,7 +224,7 @@ export default function SecurityAuditPage() {
                 </header>
 
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_0.95fr]">
-                    <section className="space-y-4 rounded-2xl border border-slate-800 bg-slate-950/80 p-5 shadow-[0_16px_70px_-50px_rgba(0,0,0,0.85)]">
+                    <section className="space-y-4 rounded-2xl border border-zinc-800/70 bg-zinc-950/70 p-5 shadow-[0_16px_70px_-50px_rgba(0,0,0,0.85)]">
                         <div className="flex flex-wrap items-start gap-4 border-b border-slate-800 pb-4">
                             <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold ${SEMAFORO_STYLES[security.level].badge}`}>
                                 <span className={`h-2.5 w-2.5 rounded-full ${SEMAFORO_STYLES[security.level].dot}`} />
@@ -296,7 +295,7 @@ export default function SecurityAuditPage() {
                     </section>
 
                     <aside className="space-y-4">
-                        <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-5 shadow-[0_16px_70px_-50px_rgba(0,0,0,0.85)]">
+                        <div className="rounded-2xl border border-zinc-800/70 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 p-5 shadow-[0_16px_70px_-50px_rgba(0,0,0,0.85)]">
                             <div className="flex flex-wrap items-center gap-3">
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs uppercase tracking-wide text-slate-500">IA</span>
@@ -355,7 +354,7 @@ export default function SecurityAuditPage() {
                             )}
                         </div>
 
-                        <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-sm text-slate-100">
+                        <div className="rounded-2xl border border-zinc-800/70 bg-zinc-950/70 p-4 text-sm text-zinc-100">
                             <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-slate-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h18" /><path d="M12 3v18" /></svg>
                                 Notas rápidas
@@ -368,7 +367,6 @@ export default function SecurityAuditPage() {
                         </div>
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

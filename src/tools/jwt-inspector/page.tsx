@@ -311,7 +311,7 @@ export default function JWTInspectorPage() {
 
     return (
         <React.Fragment>
-            <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-zinc-800/70 bg-zinc-950/60 px-5 py-4 shadow-[0_10px_60px_-35px_rgba(0,0,0,0.6)]">
+            <header className="cyber-panel cyber-border-blue flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                 <div className="flex items-center gap-3">
                     <div className="rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 p-2 shadow-lg shadow-emerald-500/30">
                         <svg

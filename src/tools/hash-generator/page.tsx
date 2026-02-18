@@ -46,9 +46,8 @@ export default function HashGeneratorPage() {
     ].join('\n');
 
     return (
-        <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/70 px-5 py-4 shadow-[0_12px_60px_-35px_rgba(0,0,0,0.9)]">
+        <div className="flex flex-col gap-6">
+                <header className="cyber-panel cyber-border-green flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl bg-gradient-to-br from-emerald-500 via-cyan-400 to-blue-500 p-2 shadow-lg shadow-emerald-500/30">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 3 6v6c0 5 3.5 9.5 9 10 5.5-.5 9-5 9-10V6Z" /><path d="M12 2v20" /><path d="M7 6h10" /><path d="M7 12h10" /></svg>
@@ -238,7 +237,6 @@ export default function HashGeneratorPage() {
                         </div>
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

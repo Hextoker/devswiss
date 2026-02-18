@@ -3,7 +3,8 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Terminal } from 'lucide-react';
+import { JetBrains_Mono } from 'next/font/google';
 import { useUIStore } from '@/store/useUIStore';
 import { ShareButton } from '@/components/ShareButton';
 
@@ -12,6 +13,12 @@ interface ToolLayoutProps {
     title?: string;
     description?: string;
 }
+
+const jetBrains = JetBrains_Mono({
+    subsets: ['latin'],
+    weight: ['400', '700'],
+    display: 'swap',
+});
 
 export function ToolLayout({ children }: ToolLayoutProps) {
     const router = useRouter();
@@ -31,28 +38,38 @@ export function ToolLayout({ children }: ToolLayoutProps) {
     }, [isCommandPaletteOpen, router]);
 
     return (
-        <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-black via-zinc-950 to-zinc-900 text-zinc-100">
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8">
-                {/* Global Header */}
-                <header className="flex flex-wrap items-center justify-between gap-4">
-                    <Link
-                        href="/"
-                        className="group flex items-center gap-2 text-sm font-medium text-zinc-500 transition hover:text-emerald-400"
-                    >
-                        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                        <span>Volver al Dashboard</span>
-                    </Link>
+        <div className={`${jetBrains.className} cyber-page cyber-scroll selection:bg-[#00FF41] selection:text-black`}>
+            <div className="cyber-scanline" />
+            <div className="cyber-vignette" />
+
+            <header className="relative z-50 border-b-2 border-[#00FF41]/20 bg-black/80 backdrop-blur-md">
+                <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-4">
+                    <div className="flex items-center gap-4">
+                        <div className="flex h-9 w-9 items-center justify-center border-2 border-[#00FF41] transform-[rotate(45deg)]">
+                            <Terminal className="h-4 w-4 -rotate-45 text-[#00FF41]" />
+                        </div>
+                        <div>
+                            <p className="text-[10px] font-bold tracking-[0.2em] text-zinc-500">DEVSWISS_TOOLKIT</p>
+                            <Link
+                                href="/"
+                                className="group inline-flex items-center gap-2 text-sm font-bold uppercase text-zinc-200 transition hover:text-[#00FF41]"
+                            >
+                                <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                                Volver al Dashboard
+                            </Link>
+                        </div>
+                    </div>
 
                     <div className="flex items-center gap-3">
                         <ShareButton />
-                        <Link href="/" className="flex items-center gap-2">
-                            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-200">
-                                DevSwiss <Sparkles className="h-3 w-3 text-emerald-200" />
-                            </div>
-                        </Link>
+                        <span className="rounded-full border border-[#00FF41]/30 bg-[#00FF41]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#00FF41]">
+                            Command-First
+                        </span>
                     </div>
-                </header>
+                </div>
+            </header>
 
+            <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-10">
                 {children}
             </div>
         </div>

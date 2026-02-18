@@ -279,9 +279,8 @@ export default function Base64LabPage() {
     };
 
     return (
-        <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/70 px-5 py-4 shadow-[0_12px_60px_-35px_rgba(0,0,0,0.9)]">
+        <div className="flex flex-col gap-6">
+                <header className="cyber-panel cyber-border-blue flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl bg-gradient-to-br from-sky-500 via-cyan-400 to-emerald-500 p-2 shadow-lg shadow-cyan-500/30">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" /><path d="M10 7h4" /><path d="M9 12h6" /><path d="M9 16h6" /></svg>
@@ -548,7 +547,6 @@ export default function Base64LabPage() {
                         </div>
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

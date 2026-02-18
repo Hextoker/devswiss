@@ -60,6 +60,11 @@ export default function CronPredictorPage() {
         dayOfWeek: '*',
     });
     const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+    const [aiOpen, setAiOpen] = useState(false);
+    const [aiPrompt, setAiPrompt] = useState('');
+    const [aiLoading, setAiLoading] = useState(false);
+    const [aiError, setAiError] = useState<string | null>(null);
+    const [aiResult, setAiResult] = useState<{ expression: string; explanation?: string } | null>(null);
 
     const expression = useMemo(
         () => [fields.minute, fields.hour, fields.dayOfMonth, fields.month, fields.dayOfWeek].join(' ').trim(),
@@ -112,15 +117,64 @@ export default function CronPredictorPage() {
         }
     };
 
-    return (
-        <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden rounded-3xl border border-zinc-900 bg-gradient-to-br from-slate-950 via-slate-950 to-black text-slate-50">
-            <div className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.15),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.12),transparent_30%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:48px_48px]" />
-            </div>
+    const handleAIGenerate = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const trimmed = aiPrompt.trim();
+        if (!trimmed) {
+            setAiError('Escribe una descripción del horario.');
+            return;
+        }
 
-            <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-emerald-500/20 bg-zinc-950/70 px-5 py-4 shadow-[0_20px_80px_-45px_rgba(16,185,129,0.6)]">
+        setAiLoading(true);
+        setAiError(null);
+        setAiResult(null);
+
+        try {
+            const response = await fetch('/api/openai/cron', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: trimmed }),
+            });
+
+            const data = (await response.json()) as { expression?: string; explanation?: string; error?: string };
+
+            if (!response.ok) {
+                setAiError(data?.error || 'No se pudo generar el cron.');
+                return;
+            }
+
+            const nextExpression = data?.expression?.trim();
+            if (!nextExpression) {
+                setAiError('La IA no devolvió una expresión válida.');
+                return;
+            }
+
+            const parts = nextExpression.split(/\s+/);
+            if (parts.length !== 5) {
+                setAiError('La IA devolvió una expresión incompleta.');
+                return;
+            }
+
+            const [minute, hour, dayOfMonth, month, dayOfWeek] = parts;
+            setFields({
+                minute: sanitize(minute),
+                hour: sanitize(hour),
+                dayOfMonth: sanitize(dayOfMonth),
+                month: sanitize(month),
+                dayOfWeek: sanitize(dayOfWeek),
+            });
+            setAiResult({ expression: nextExpression, explanation: data.explanation });
+        } catch (err) {
+            console.error('Error al generar cron con IA', err);
+            setAiError('No se pudo generar el cron.');
+        } finally {
+            setAiLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex flex-col gap-6">
+                <header className="cyber-panel cyber-border-green flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-2 shadow-[0_0_40px_rgba(16,185,129,0.35)]">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-300"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l3 3" /></svg>
@@ -158,6 +212,13 @@ export default function CronPredictorPage() {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>
                                         {copyState === 'copied' ? 'Copiado' : copyState === 'error' ? 'Error' : 'Copiar cron'}
                                     </button>
+                                    <button
+                                        onClick={() => setAiOpen((prev) => !prev)}
+                                        className="inline-flex items-center gap-2 rounded-md border border-cyan-400/40 bg-cyan-500/10 px-3 py-2 text-xs font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/60"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18" /><path d="M3 12h18" /></svg>
+                                        {aiOpen ? 'Cerrar IA' : 'Generar con IA'}
+                                    </button>
                                     <ExplainButton toolName="Cron Predictor" context={aiContext} />
                                 </div>
                             </div>
@@ -166,6 +227,39 @@ export default function CronPredictorPage() {
                                 {humanText}
                                 {!isValid && <span className="ml-2 text-amber-200 underline decoration-dotted">Pulsa &quot;Explicar con IA&quot; para ver cómo corregirlo.</span>}
                             </p>
+
+                            {aiOpen && (
+                                <div className="mt-4 rounded-2xl border border-cyan-500/25 bg-cyan-500/5 p-4">
+                                    <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-wide text-cyan-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20" /><path d="M2 12h20" /></svg>
+                                        Asistente de cron
+                                    </div>
+                                    <form onSubmit={handleAIGenerate} className="mt-3 flex flex-col gap-3 lg:flex-row">
+                                        <input
+                                            value={aiPrompt}
+                                            onChange={(e) => setAiPrompt(e.target.value)}
+                                            placeholder="Ej: Todos los lunes a las 09:30"
+                                            className="w-full flex-1 rounded-lg border border-cyan-500/30 bg-black/60 px-3 py-2 text-sm text-cyan-50 outline-none transition focus:border-cyan-300 focus:ring-2 focus:ring-cyan-500/30"
+                                        />
+                                        <button
+                                            type="submit"
+                                            disabled={aiLoading}
+                                            className="inline-flex items-center justify-center gap-2 rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-50 transition hover:-translate-y-0.5 hover:border-cyan-300/70 disabled:cursor-not-allowed disabled:opacity-60"
+                                        >
+                                            {aiLoading ? 'Generando...' : 'Generar cron'}
+                                        </button>
+                                    </form>
+                                    {aiError && <p className="mt-3 text-sm text-amber-200">{aiError}</p>}
+                                    {aiResult && (
+                                        <div className="mt-3 rounded-xl border border-cyan-500/30 bg-cyan-500/10 px-3 py-2 text-sm text-cyan-50">
+                                            <p className="font-mono">{aiResult.expression}</p>
+                                            {aiResult.explanation && (
+                                                <p className="mt-2 text-xs text-cyan-100/80">{aiResult.explanation}</p>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                             <div className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                                 {(Object.keys(FIELD_CONFIG) as CronFieldKey[]).map((key) => (
@@ -235,7 +329,6 @@ export default function CronPredictorPage() {
                         </div>
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

@@ -125,18 +125,8 @@ export default function GlassmorphismGeneratorPage() {
     );
 
     return (
-        <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden rounded-3xl border border-slate-900/40 bg-slate-950 text-white">
-            <div className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.25),rgba(56,189,248,0)),radial-gradient(circle_at_80%_0%,rgba(236,72,153,0.3),rgba(236,72,153,0)),radial-gradient(circle_at_50%_80%,rgba(94,234,212,0.18),rgba(94,234,212,0))]" />
-                <motion.div
-                    className="absolute inset-10 rounded-[32px] border border-white/5"
-                    animate={{ boxShadow: ['0 0 0 0 rgba(255,255,255,0.04)', '0 0 0 24px rgba(255,255,255,0)'] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                />
-            </div>
-
-            <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 backdrop-blur-md">
+        <div className="flex flex-col gap-6">
+                <header className="cyber-panel cyber-border-purple flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-purple-600 p-2 shadow-lg shadow-cyan-500/30">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M7 10.5 12 7l5 3.5" /><path d="M7 13.5 12 17l5-3.5" /></svg>
@@ -238,7 +228,6 @@ export default function GlassmorphismGeneratorPage() {
                         </div>
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

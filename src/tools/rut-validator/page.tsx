@@ -100,14 +100,8 @@ export default function RutValidatorPage() {
     ];
 
     return (
-        <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden rounded-3xl border border-slate-900/60 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-50">
-            <div className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.18),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(244,114,182,0.16),transparent_35%),radial-gradient(circle_at_50%_80%,rgba(16,185,129,0.16),transparent_38%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:52px_52px]" />
-            </div>
-
-            <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8">
-                <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-cyan-500/25 bg-slate-950/70 px-5 py-4 shadow-[0_16px_70px_-40px_rgba(56,189,248,0.55)]">
+        <div className="flex flex-col gap-6">
+                <header className="cyber-panel cyber-border-blue flex flex-wrap items-center justify-between gap-4 px-5 py-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl border border-cyan-400/40 bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-600 p-2 shadow-[0_10px_50px_rgba(56,189,248,0.35)]">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 15 3-3-3-3" /><path d="m9 15-3-3 3-3" /><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16" /><path d="M19 21 5 21" /><path d="M9 9h1" /><path d="M9 13h1" /><path d="M14 9h1" /><path d="M14 13h1" /></svg>
@@ -251,7 +245,6 @@ export default function RutValidatorPage() {
                         </div>
                     </aside>
                 </div>
-            </div>
         </div>
     );
 }

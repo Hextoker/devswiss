@@ -11,18 +11,7 @@ interface ExplainButtonProps {
 export const ExplainButton: React.FC<ExplainButtonProps> = ({ toolName, context }) => {
     const { explanation, loading, error, explain } = useAIExplain();
     const [isOpen, setIsOpen] = useState(false);
-    const [isMobile, setIsMobile] = useState(() => {
-        if (typeof window === 'undefined') return false;
-        return window.matchMedia('(max-width: 768px)').matches;
-    });
     const popoverRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const mediaQuery = window.matchMedia('(max-width: 768px)');
-        const handleViewportChange = (event: MediaQueryListEvent) => setIsMobile(event.matches);
-        mediaQuery.addEventListener('change', handleViewportChange);
-        return () => mediaQuery.removeEventListener('change', handleViewportChange);
-    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -58,7 +47,7 @@ export const ExplainButton: React.FC<ExplainButtonProps> = ({ toolName, context 
 
     const panel = (
         <div
-            className="w-full max-w-sm rounded-xl border border-zinc-200 bg-white/90 shadow-2xl backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/90"
+            className="w-full max-w-2xl rounded-xl border border-zinc-400 bg-white/90 shadow-2xl backdrop-blur dark:border-zinc-600 dark:bg-zinc-900/90"
             role="dialog"
             aria-label="Explicación con IA"
         >
@@ -75,7 +64,7 @@ export const ExplainButton: React.FC<ExplainButtonProps> = ({ toolName, context 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
                 </button>
             </div>
-            <div className="max-h-64 overflow-y-auto px-4 py-3 text-sm text-zinc-700 dark:text-zinc-200">
+            <div className="max-h-[70vh] overflow-y-auto px-4 py-3 text-sm text-zinc-700 dark:text-zinc-200">
                 {loading ? (
                     <div className="flex items-center gap-3 py-3">
                         <span className="inline-flex h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent" />
@@ -117,9 +106,7 @@ export const ExplainButton: React.FC<ExplainButtonProps> = ({ toolName, context 
             {isOpen && (
                 <>
                     <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" />
-                    <div
-                        className={`${isMobile ? 'fixed inset-x-4 bottom-6 z-50' : 'absolute right-0 top-full z-50 mt-2'}`}
-                    >
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                         {panel}
                     </div>
                 </>

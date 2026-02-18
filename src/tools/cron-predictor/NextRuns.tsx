@@ -213,6 +213,7 @@ const describeMonth = (field: ParsedField) => {
     return `en ${formatList(field.values, (value) => MONTH_NAMES[value - 1] ?? String(value))}`;
 };
 
+
 export const describeCron = (result: CronParseResult): string => {
     if (!result.expression.trim()) {
         return 'Ingresa tu cron de 5 campos (minuto hora día mes díaSemana).';
@@ -274,11 +275,15 @@ const matchesDate = (fields: Record<CronField, ParsedField>, date: Date) => {
     const month = date.getMonth() + 1;
     const dayOfWeek = date.getDay();
 
-    return (
+    const baseMatches =
         fields.minute.valueSet.has(minute) &&
         fields.hour.valueSet.has(hour) &&
+        fields.month.valueSet.has(month);
+
+    if (!baseMatches) return false;
+
+    return (
         fields.dayOfMonth.valueSet.has(dayOfMonth) &&
-        fields.month.valueSet.has(month) &&
         (fields.dayOfWeek.valueSet.has(dayOfWeek) || (dayOfWeek === 0 && fields.dayOfWeek.valueSet.has(7)))
     );
 };
