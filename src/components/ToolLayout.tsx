@@ -13,7 +13,7 @@ interface ToolLayoutProps {
     description?: string;
 }
 
-export function ToolLayout({ children, title, description }: ToolLayoutProps) {
+export function ToolLayout({ children }: ToolLayoutProps) {
     const router = useRouter();
     const { isCommandPaletteOpen } = useUIStore();
 

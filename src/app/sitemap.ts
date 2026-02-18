@@ -12,6 +12,7 @@ const toolPaths = [
   "/tools/hash-generator",
   "/tools/glassmorphism-gen",
   "/tools/jwt-inspector",
+  "/tools/security-audit",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

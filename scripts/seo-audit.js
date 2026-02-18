@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 
@@ -9,7 +10,7 @@ const toolsDir = path.join(appDir, 'tools');
 const readText = (filePath) => {
   try {
     return fs.readFileSync(filePath, 'utf8');
-  } catch (err) {
+  } catch {
     return null;
   }
 };

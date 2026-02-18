@@ -4,15 +4,14 @@ import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 
 import { useRouter } from 'next/navigation';
 import type { LucideIcon } from 'lucide-react';
 import {
-    ArrowUpRight,
     BadgeCheck,
     Braces,
     Clock3,
+    Code2,
     FileJson,
-    Filter,
     Fingerprint,
-    ShieldCheck,
-    Sparkles,
+    KeyRound,
+    Search,
     Star,
     Wand2,
 } from 'lucide-react';
@@ -47,7 +46,7 @@ const favoritesStore = {
 };
 
 const iconMap: Record<ToolMeta['icon'], LucideIcon> = {
-    shield: ShieldCheck,
+    shield: KeyRound,
     hash: Fingerprint,
     regex: Braces,
     json: FileJson,
@@ -58,38 +57,70 @@ const iconMap: Record<ToolMeta['icon'], LucideIcon> = {
 
 const accentMap: Record<
     ToolMeta['accent'],
-    { border: string; badge: string; text: string; glow?: string }
+    {
+        borderClass: string;
+        iconBorderClass: string;
+        iconTextClass: string;
+        labelTextClass: string;
+        buttonHoverClass: string;
+        actionTextClass: string;
+        lineClass: string;
+    }
 > = {
     emerald: {
-        border: 'border-emerald-500/40',
-        badge: 'bg-emerald-500/10 text-emerald-100',
-        text: 'text-emerald-100',
-        glow: 'shadow-[0_20px_60px_-40px_rgba(16,185,129,0.9)]',
+        borderClass: 'cyber-border-green',
+        iconBorderClass: 'border-[#00FF41]/30 group-hover:border-[#00FF41] group-hover:shadow-[0_0_15px_rgba(0,255,65,0.4)]',
+        iconTextClass: 'text-[#00FF41]',
+        labelTextClass: 'text-[#00FF41]',
+        buttonHoverClass: 'hover:bg-[#00FF41]/5',
+        actionTextClass: 'text-[#00FF41]',
+        lineClass: 'bg-[#00FF41]/20',
     },
     cyan: {
-        border: 'border-cyan-400/40',
-        badge: 'bg-cyan-500/10 text-cyan-100',
-        text: 'text-cyan-100',
-        glow: 'shadow-[0_20px_60px_-40px_rgba(34,211,238,0.65)]',
+        borderClass: 'cyber-border-blue',
+        iconBorderClass: 'border-[#00F0FF]/30 group-hover:border-[#00F0FF] group-hover:shadow-[0_0_15px_rgba(0,240,255,0.4)]',
+        iconTextClass: 'text-[#00F0FF]',
+        labelTextClass: 'text-[#00F0FF]',
+        buttonHoverClass: 'hover:bg-[#00F0FF]/5',
+        actionTextClass: 'text-[#00F0FF]',
+        lineClass: 'bg-[#00F0FF]/20',
     },
     amber: {
-        border: 'border-amber-400/40',
-        badge: 'bg-amber-500/10 text-amber-100',
-        text: 'text-amber-100',
-        glow: 'shadow-[0_20px_60px_-40px_rgba(251,191,36,0.55)]',
+        borderClass: 'cyber-border-yellow',
+        iconBorderClass: 'border-[#FFF000]/30 group-hover:border-[#FFF000] group-hover:shadow-[0_0_15px_rgba(255,240,0,0.4)]',
+        iconTextClass: 'text-[#FFF000]',
+        labelTextClass: 'text-[#FFF000]',
+        buttonHoverClass: 'hover:bg-[#FFF000]/5',
+        actionTextClass: 'text-[#FFF000]',
+        lineClass: 'bg-[#FFF000]/20',
     },
     violet: {
-        border: 'border-violet-400/40',
-        badge: 'bg-violet-500/10 text-violet-100',
-        text: 'text-violet-100',
-        glow: 'shadow-[0_20px_60px_-40px_rgba(167,139,250,0.6)]',
+        borderClass: 'cyber-border-purple',
+        iconBorderClass: 'border-[#BC00FF]/30 group-hover:border-[#BC00FF] group-hover:shadow-[0_0_15px_rgba(188,0,255,0.4)]',
+        iconTextClass: 'text-[#BC00FF]',
+        labelTextClass: 'text-[#BC00FF]',
+        buttonHoverClass: 'hover:bg-[#BC00FF]/5',
+        actionTextClass: 'text-[#BC00FF]',
+        lineClass: 'bg-[#BC00FF]/20',
     },
     blue: {
-        border: 'border-blue-400/40',
-        badge: 'bg-blue-500/10 text-blue-100',
-        text: 'text-blue-100',
-        glow: 'shadow-[0_20px_60px_-40px_rgba(96,165,250,0.6)]',
+        borderClass: 'cyber-border-blue',
+        iconBorderClass: 'border-[#00F0FF]/30 group-hover:border-[#00F0FF] group-hover:shadow-[0_0_15px_rgba(0,240,255,0.4)]',
+        iconTextClass: 'text-[#00F0FF]',
+        labelTextClass: 'text-[#00F0FF]',
+        buttonHoverClass: 'hover:bg-[#00F0FF]/5',
+        actionTextClass: 'text-[#00F0FF]',
+        lineClass: 'bg-[#00F0FF]/20',
     },
+};
+
+const filterNameMap: Record<FilterKey, string> = {
+    all: 'ALL_TOOLS',
+    Seguridad: 'SECURITY',
+    Datos: 'FORMATTERS',
+    Diseño: 'CONVERTERS',
+    Automatización: 'GENERATORS',
+    DevTools: 'DEVTOOLS',
 };
 
 const saveToolVisit = (toolId: string) => {
@@ -115,6 +146,7 @@ export function ToolGrid() {
         () => EMPTY_FAVORITES
     );
     const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         if (!isBrowser) return;
@@ -132,19 +164,28 @@ export function ToolGrid() {
 
     const filters = useMemo(
         () => [
-            { label: 'Todas', value: 'all' as FilterKey },
-            ...toolCategories.map((category) => ({ label: category, value: category as FilterKey })),
+            { label: filterNameMap.all, value: 'all' as FilterKey },
+            ...toolCategories.map((category) => ({
+                label: filterNameMap[category],
+                value: category as FilterKey,
+            })),
         ],
         []
     );
 
-    const filteredTools = useMemo(
-        () =>
-            activeFilter === 'all'
-                ? tools
-                : tools.filter((tool) => tool.category === activeFilter),
-        [activeFilter]
-    );
+    const filteredTools = useMemo(() => {
+        const normalizedQuery = searchTerm.trim().toLowerCase();
+        const scoped = activeFilter === 'all' ? tools : tools.filter((tool) => tool.category === activeFilter);
+
+        if (!normalizedQuery) return scoped;
+
+        return scoped.filter((tool) => {
+            const haystack = [tool.name, tool.description, tool.category, ...(tool.keywords ?? [])]
+                .join(' ')
+                .toLowerCase();
+            return haystack.includes(normalizedQuery);
+        });
+    }, [activeFilter, searchTerm]);
 
     const orderedTools = useMemo(() => {
         const withFavoritesFirst = [...filteredTools].sort((a, b) => {
@@ -179,27 +220,39 @@ export function ToolGrid() {
     );
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-100">
-                    <Filter className="h-3.5 w-3.5" />
-                    Filtros
+        <div className="space-y-10">
+            <div className="mb-12">
+                <div className="cyber-panel cyber-border-green p-0.5">
+                    <div className="flex items-center gap-4 bg-black/40 p-4">
+                        <span className="font-bold text-[#00FF41]">/&gt;</span>
+                        <input
+                            className="w-full border-none bg-transparent text-lg uppercase text-zinc-200 placeholder:text-zinc-700 focus:ring-0"
+                            placeholder="SEARCH_DATABASE..."
+                            value={searchTerm}
+                            onChange={(event) => setSearchTerm(event.target.value)}
+                            type="text"
+                        />
+                        <div className="hidden border border-[#00FF41] px-3 py-1 text-[10px] font-bold text-[#00FF41] sm:block">
+                            KEY: CTRL_K
+                        </div>
+                    </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                    {filters.map((filter) => {
+
+                <div className="mt-10 flex flex-wrap gap-3">
+                    {filters.map((filter, index) => {
                         const isActive = filter.value === activeFilter;
+                        const activeClass = isActive
+                            ? 'border-[#00FF41] bg-[#00FF41] text-black'
+                            : 'border-zinc-700 text-zinc-200 hover:border-[#00F0FF] hover:text-[#00F0FF]';
+
                         return (
                             <button
                                 key={filter.value}
                                 type="button"
                                 onClick={() => setActiveFilter(filter.value)}
-                                className={`relative inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition ${
-                                    isActive
-                                        ? 'border-emerald-400/70 bg-emerald-500/10 text-emerald-100 shadow-[0_15px_45px_-30px_rgba(16,185,129,0.8)]'
-                                        : 'border-zinc-800 bg-zinc-900/70 text-zinc-300 hover:border-emerald-500/40 hover:text-emerald-50'
-                                }`}
+                                className={`px-6 py-2 text-xs font-bold uppercase transition-all ${activeClass}`}
+                                style={{ clipPath: index === 0 ? 'polygon(0 0,100% 0,90% 100%,10% 100%)' : undefined }}
                             >
-                                {isActive && <Sparkles className="h-4 w-4 text-emerald-300" />}
                                 {filter.label}
                             </button>
                         );
@@ -207,11 +260,29 @@ export function ToolGrid() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {orderedTools.map((tool) => {
-                    const Icon = iconMap[tool.icon] ?? Sparkles;
+            <div className="mb-10 flex items-center gap-4">
+                <div className="h-2 w-2 bg-[#00FF41]" />
+                <h2 className="text-xl font-bold uppercase tracking-widest text-[#00FF41]"># POPULAR_UTILITIES</h2>
+                <div className="h-px flex-1 bg-linear-to-r from-[#00FF41] to-transparent" />
+                <span className="text-[10px] font-bold text-zinc-500">
+                    [ {String(orderedTools.length).padStart(2, '0')}_RECORDS_FOUND ]
+                </span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+                {orderedTools.map((tool, index) => {
+                    const Icon = iconMap[tool.icon] ?? Code2;
                     const accent = accentMap[tool.accent];
                     const isFavorite = favorites.includes(tool.id);
+                    const staggerClass =
+                        index % 3 === 0
+                            ? 'lg:mt-4'
+                            : index % 3 === 1
+                              ? 'lg:-mt-4'
+                              : 'lg:mt-8';
+
+                    const label = tool.spotlight ? 'STATUS: NEW' : `TYPE: ${tool.category.toUpperCase()}`;
+                    const panelTitle = tool.name.replace(/\s+/g, '_').toUpperCase();
 
                     return (
                         <article
@@ -225,34 +296,9 @@ export function ToolGrid() {
                                     handleOpenTool(tool);
                                 }
                             }}
-                            className={`group relative overflow-hidden rounded-2xl border bg-gradient-to-br from-zinc-950 via-zinc-950 to-black p-5 transition hover:-translate-y-1 hover:border-emerald-400/60 ${
-                                tool.spotlight
-                                    ? 'border-emerald-400/70 ring-1 ring-emerald-500/40'
-                                    : 'border-zinc-800/80'
-                            } ${accent?.glow || ''}`}
+                            className={`cyber-panel group cursor-pointer p-6 transition-all ${accent.borderClass} ${accent.buttonHoverClass} ${staggerClass}`}
                         >
-                            {tool.spotlight && (
-                                <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent" />
-                            )}
-                            <div className="flex items-start justify-between gap-3">
-                                <div className="flex items-center gap-3">
-                                    <span
-                                        className={`flex h-11 w-11 items-center justify-center rounded-xl border bg-black/50 ${accent?.border || 'border-zinc-800'}`}
-                                    >
-                                        <Icon className={`h-5 w-5 ${accent?.text || 'text-zinc-200'}`} />
-                                    </span>
-                                    <div>
-                                        <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500">
-                                            {tool.category}
-                                        </p>
-                                        <div className="flex items-center gap-2">
-                                            <h3 className="text-lg font-semibold text-white">{tool.name}</h3>
-                                            {tool.spotlight && (
-                                                <ShieldCheck className="h-5 w-5 text-emerald-300" />
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="mb-8 flex items-start justify-between">
                                 <button
                                     type="button"
                                     aria-pressed={isFavorite}
@@ -261,38 +307,54 @@ export function ToolGrid() {
                                         event.stopPropagation();
                                         handleToggleFavorite(tool.id);
                                     }}
-                                    className={`rounded-full border p-2 transition ${
+                                    className={`order-last text-zinc-500 transition-all duration-300 ${
                                         isFavorite
-                                            ? 'border-amber-400/80 bg-amber-500/15 text-amber-200 shadow-[0_10px_30px_-18px_rgba(251,191,36,0.6)]'
-                                            : 'border-zinc-700 bg-zinc-900/90 text-zinc-300 hover:border-amber-400/60 hover:text-amber-100'
+                                            ? 'text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]'
+                                            : 'hover:text-emerald-400 hover:drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]'
                                     }`}
                                 >
-                                    <Star
-                                        className="h-4 w-4"
-                                        fill={isFavorite ? 'currentColor' : 'none'}
-                                        strokeWidth={1.75}
-                                    />
+                                    <Star className="h-4 w-4" fill={isFavorite ? 'currentColor' : 'none'} strokeWidth={1.8} />
                                 </button>
+
+                                <div className={`flex h-14 w-14 items-center justify-center border-2 bg-black ${accent.iconBorderClass}`}>
+                                    <Icon className={`h-7 w-7 ${accent.iconTextClass}`} />
+                                </div>
+
+                                <div className="flex-1 px-4">
+                                    <div className={`mb-1 text-[8px] font-bold uppercase tracking-tighter ${accent.labelTextClass}`}>
+                                        {tool.category.toUpperCase()}
+                                    </div>
+                                    <span
+                                        className={`inline-block border px-2 py-0.5 text-[10px] font-bold uppercase ${accent.iconBorderClass} ${accent.labelTextClass}`}
+                                    >
+                                        {label}
+                                    </span>
+                                </div>
                             </div>
 
-                            <p className="mt-3 text-sm text-zinc-400">{tool.description}</p>
+                            <h3 className={`mb-4 text-3xl font-bold uppercase transition-colors ${accent.labelTextClass}`}>
+                                {panelTitle}
+                            </h3>
 
-                            <div className="mt-5 flex items-center justify-between">
-                                <span
-                                    className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${accent?.border || 'border-zinc-800'} ${accent?.badge || 'text-zinc-200'}`}
-                                >
-                                    <Sparkles className={`h-4 w-4 ${accent?.text || 'text-zinc-100'}`} />
-                                    {tool.tagline}
-                                </span>
-                                <span className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-100 opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100">
-                                    Abrir herramienta
-                                    <ArrowUpRight className="h-4 w-4" />
-                                </span>
+                            <p className="mb-6 text-xs leading-relaxed text-zinc-400 group-hover:text-zinc-200">{tool.description}</p>
+
+                            <div className="flex items-center justify-between">
+                                <div className={`text-[10px] font-bold uppercase tracking-widest ${accent.actionTextClass}`}>
+                                    &gt; EXECUTE_COMMAND
+                                </div>
+                                <div className={`h-0.5 w-8 ${accent.lineClass}`} />
                             </div>
                         </article>
                     );
                 })}
             </div>
+
+            {orderedTools.length === 0 && (
+                <div className="cyber-panel cyber-border-green p-8 text-center">
+                    <Search className="mx-auto mb-3 h-5 w-5 text-[#00FF41]" />
+                    <p className="text-sm uppercase tracking-wider text-zinc-300">NO_RESULTS_FOR_CURRENT_QUERY</p>
+                </div>
+            )}
         </div>
     );
 }

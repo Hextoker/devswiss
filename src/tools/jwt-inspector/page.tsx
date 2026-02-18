@@ -66,7 +66,7 @@ const formatValue = (value: unknown) => {
 const parseJson = (value: string) => {
     try {
         return { json: JSON.parse(value) as Record<string, unknown>, error: null };
-    } catch (err) {
+    } catch {
         return { json: null, error: 'JSON invalido' };
     }
 };
@@ -82,7 +82,7 @@ const decodeSegment = (segment: string): DecodeSegment => {
         const text = decodeBase64Url(segment);
         const { json, error } = parseJson(text);
         return { raw: segment, text, json, error };
-    } catch (err) {
+    } catch {
         return { raw: segment, text: null, json: null, error: 'No se pudo decodificar' };
     }
 };
@@ -191,7 +191,12 @@ export default function JWTInspectorPage() {
         const token = params.get('token');
         if (!token) return;
         hasPrefilled.current = true;
-        setTokenInput(token);
+        const timeoutId = window.setTimeout(() => {
+            setTokenInput(token);
+        }, 0);
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
     }, []);
 
     const decoded = useMemo(() => {

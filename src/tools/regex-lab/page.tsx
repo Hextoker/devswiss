@@ -184,17 +184,22 @@ export default function RegexLabPage() {
 
         if (!incomingPattern && !incomingTest && !incomingFlags) return;
 
-        if (incomingPattern) setPattern(incomingPattern);
-        if (incomingTest) setTestText(incomingTest);
-        if (incomingFlags) {
-            setFlags({
-                g: incomingFlags.includes('g'),
-                i: incomingFlags.includes('i'),
-                m: incomingFlags.includes('m'),
-            });
-        }
+        const timeoutId = window.setTimeout(() => {
+            if (incomingPattern) setPattern(incomingPattern);
+            if (incomingTest) setTestText(incomingTest);
+            if (incomingFlags) {
+                setFlags({
+                    g: incomingFlags.includes('g'),
+                    i: incomingFlags.includes('i'),
+                    m: incomingFlags.includes('m'),
+                });
+            }
+            hasPrefilled.current = true;
+        }, 0);
 
-        hasPrefilled.current = true;
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
     }, []);
 
     return (

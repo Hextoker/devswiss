@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ExplainButton } from '@/components/shared/ExplainButton';
 
@@ -157,7 +158,7 @@ export default function Base64LabPage() {
                 }
 
                 updatePreview(null, '', false);
-            } catch (error) {
+            } catch {
                 setDecodeError('Base64 inválido o corrupto. Revisa padding o caracteres.');
                 setDecodedOutput('');
                 setDecodeInfo('');
@@ -180,7 +181,7 @@ export default function Base64LabPage() {
         try {
             await navigator.clipboard.writeText(value);
             setCopyState((prev) => ({ ...prev, [target]: 'copied' }));
-        } catch (error) {
+        } catch {
             setCopyState((prev) => ({ ...prev, [target]: 'error' }));
         } finally {
             setTimeout(() => {
@@ -520,9 +521,12 @@ export default function Base64LabPage() {
                             </div>
                             <div className="mt-3 flex min-h-[180px] items-center justify-center rounded-xl border border-slate-800 bg-slate-900/60">
                                 {previewSrc ? (
-                                    <img
+                                    <Image
                                         src={previewSrc}
                                         alt="Vista previa Base64"
+                                        width={1200}
+                                        height={720}
+                                        unoptimized
                                         className="max-h-[180px] w-full object-contain"
                                     />
                                 ) : (

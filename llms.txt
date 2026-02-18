@@ -10,12 +10,15 @@ DevSwiss is a high-performance, privacy-first collection of developer utilities 
 ## Available Tools
 - **RUT Validator**: Chilean RUT validation, formatting, and generation using Modulo 11 algorithm.
 - **JSON Master**: Formatting, minification, and visual inspection of JSON objects.
+- **Base64 Lab**: Encode/decode text and payloads in Base64 for debugging and transport tests.
 - **Cron Generator**: Human-readable translation and generation of Cron expressions.
 - **Regex Tester**: Real-time regular expression testing with explanatory breakdowns.
 - **Hash Generator**: Secure client-side hashing using Bcrypt, Argon2, and SHA-256.
 - **Glassmorphism Generator**: Visual CSS tool for modern frosted-glass UI effects.
+- **JWT Inspector**: Decode and inspect JWT structure locally for fast token debugging.
+- **Security Audit**: Browser-side checks and practical guidance for common web security headers and risks.
 
 ## Technical Integration
 - **Navigation**: Uses Next.js App Router with consistent `ToolLayout` for unified UX.
 - **Infrastructure**: Served via AWS CloudFront and S3 for global low-latency access.
-- **Discovery**: Full SEO metadata and JSON-LD structured data implemented for AI agent indexing.
+- **Discovery**: Route-level SEO metadata, `robots.txt`, `sitemap.xml`, and `llms.txt` are maintained for crawler and AI-agent discovery.
