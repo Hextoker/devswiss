@@ -1,0 +1,21 @@
+# DevSwiss: The Swiss Army Knife for Developers
+
+DevSwiss is a high-performance, privacy-first collection of developer utilities designed for zero-friction workflows. All processing is done locally in the browser to ensure data privacy and 100ms response times.
+
+## Core Principles
+- **Privacy-First**: No data is sent to servers; all validation and formatting occur on the client side.
+- **Zero Friction**: Accessible via a global Command Palette (Cmd+K) and Quick Actions.
+- **Educational AI**: Every tool includes a pedagogical AI tutor to explain technical concepts.
+
+## Available Tools
+- **RUT Validator**: Chilean RUT validation, formatting, and generation using Modulo 11 algorithm.
+- **JSON Master**: Formatting, minification, and visual inspection of JSON objects.
+- **Cron Generator**: Human-readable translation and generation of Cron expressions.
+- **Regex Tester**: Real-time regular expression testing with explanatory breakdowns.
+- **Hash Generator**: Secure client-side hashing using Bcrypt, Argon2, and SHA-256.
+- **Glassmorphism Generator**: Visual CSS tool for modern frosted-glass UI effects.
+
+## Technical Integration
+- **Navigation**: Uses Next.js App Router with consistent `ToolLayout` for unified UX.
+- **Infrastructure**: Served via AWS CloudFront and S3 for global low-latency access.
+- **Discovery**: Full SEO metadata and JSON-LD structured data implemented for AI agent indexing.

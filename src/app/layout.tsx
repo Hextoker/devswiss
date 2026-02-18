@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CommandPalette } from "@/components/CommandPalette";
+import { getSiteUrl } from "@/utils/siteUrl";
 
 const inter = localFont({
   src: "../../public/fonts/Inter.var.woff2",
@@ -12,9 +13,7 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-  ),
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "DevSwiss",
     template: "%s | DevSwiss",

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { getSiteUrl } from "@/utils/siteUrl";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+export const dynamic = "force-static";
 
 const toolPaths = [
   "/tools/rut-validator",
@@ -14,6 +15,7 @@ const toolPaths = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = getSiteUrl();
   const lastModified = new Date();
 
   return [
