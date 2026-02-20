@@ -4,7 +4,6 @@ La navaja suiza definitiva para developers. DevSwiss es una suite de utilidades 
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED)](https://www.docker.com/)
-[![AWS](https://img.shields.io/badge/AWS-compatible-232F3E)](https://aws.amazon.com/)
 [![Tailwind](https://img.shields.io/badge/TailwindCSS-38B2AC)](https://tailwindcss.com/)
 
 ## Propuesta de valor
