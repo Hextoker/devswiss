@@ -1,95 +1,54 @@
-# 🛠️ DevSwiss: Manifesto & Business Rules
+# DevSwiss
 
-## 1. Nuestra Misión
-"Centralizar la utilidad en el desarrollo web, eliminando las barreras de registro y fragmentación mediante una navaja suiza de herramientas intuitivas, privadas y potenciadas por IA que educan mientras resuelven."
+La navaja suiza definitiva para developers. DevSwiss es una suite de utilidades de alto rendimiento, enfocada en privacidad, con experiencia zero-friction y soporte pedagogico con IA.
 
-## 2. Objetivos Estratégicos
-Zero Fricción: Permitir que cualquier desarrollador acceda a soluciones técnicas en menos de 3 clics o una sola búsqueda.
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED)](https://www.docker.com/)
+[![AWS](https://img.shields.io/badge/AWS-compatible-232F3E)](https://aws.amazon.com/)
+[![Tailwind](https://img.shields.io/badge/TailwindCSS-38B2AC)](https://tailwindcss.com/)
 
-Privacidad por Diseño: Garantizar que los datos sensibles (RUTs, JSONs, Hashes) se procesen localmente y nunca toquen un servidor externo sin consentimiento.
+## Propuesta de valor
 
-Cerrar la Brecha de Conocimiento: No solo entregar un resultado, sino explicar el "por qué" técnico mediante asistencia de IA para desarrolladores Junior y Senior.
+DevSwiss se construye sobre tres pilares claros:
 
-Persistencia sin Cuentas: Ofrecer una experiencia personalizada (favoritos y recientes) basada exclusivamente en almacenamiento local nativo.
+- **Privacy-First**: procesamiento local en el navegador; tus datos no salen del cliente.
+- **Zero Friction**: todas las herramientas son accesibles desde una Command Palette con busqueda global.
+- **Pedagogia con IA**: cada herramienta explica el por que tecnico, no solo el resultado.
 
-## 3. Reglas del Juego (Business Rules)
-Para mantener la coherencia del producto a medida que crezca, cada nueva herramienta o funcionalidad debe cumplir con estas reglas:
+## Arquitectura de despliegue
 
-### A. Reglas de Producto
-Ley del Registro Zero: Ninguna funcionalidad principal (validar, formatear, generar) puede estar bloqueada tras un formulario de registro o pago.
+Disenado para correr en Docker, con un flujo simple y reproducible.
 
-Interfaz "Command-First": El buscador central es el corazón de la app; todas las herramientas deben ser invocables mediante parámetros desde la barra de búsqueda (Quick Actions).
-
-Modularidad Atómica: Cada herramienta debe ser independiente, permitiendo que la plataforma crezca sin añadir peso innecesario a otras secciones.
-
-### B. Reglas de Ingeniería (Stack Técnico)
-Client-Side First: Si la lógica puede ejecutarse en el navegador (JS/TS/WASM), debe hacerse ahí para maximizar la velocidad y privacidad.
-
-Rendimiento "Blink-Test": Los filtros del buscador y la carga de herramientas favoritas deben responder en menos de 100ms.
-
-Estado Nativo: La persistencia de preferencias debe usar la API de localStorage para asegurar que el usuario sea el único dueño de sus datos.
-
-### C. Reglas de Educación (IA)
-Contextualidad: Las explicaciones de IA no deben ser genéricas; deben basarse en los datos que el usuario tiene en pantalla (ej: explicar específicamente la expresión Regular que el usuario escribió).
-
-Tono Ayudante: La IA debe actuar como un compañero de equipo Senior: directo, técnico pero accesible, y libre de relleno innecesario.
-
-## Comenzando
-
-Primero, ejecuta el servidor de desarrollo:
-
-```bash
-npm run dev
-# o
-yarn dev
-# o
-pnpm dev
-# o
-bun dev
+```
+Usuario -> ALB -> Apache (Proxy) -> Docker (Next.js)
 ```
 
-Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+### Instrucciones rapidas
 
-Puedes comenzar a editar la página modificando `app/page.tsx`. La página se actualiza automáticamente a medida que editas el archivo.
+```bash
+docker-compose up -d
+```
 
-Este proyecto utiliza [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) para optimizar y cargar automáticamente [Geist](https://vercel.com/font), una nueva familia tipográfica de Vercel.
+## Privacidad y seguridad
 
+DevSwiss prioriza la seguridad por diseno:
 
-## Dependencias instaladas
+- La persistencia se mantiene en `localStorage` (favoritos, recientes, preferencias).
+- Las operaciones criticas se ejecutan en el cliente (JS/TS/WASM), evitando enviar payloads sensibles a servidores.
+- Esto reduce superficie de ataque y elimina riesgos de exfiltracion accidental.
 
+## Guia para IA (LLMs)
 
-### Dependencias principales
+El archivo `llms.txt` describe rapidamente el contexto del proyecto para agentes de IA y herramientas de analisis. Si estas automatizando tareas o generando cambios, revisa primero `llms.txt`.
 
-- **next**: Framework de React para aplicaciones web modernas, con renderizado del lado del servidor y generación de sitios estáticos.
-- **react**: Biblioteca principal para construir interfaces de usuario basadas en componentes.
-- **react-dom**: Permite renderizar componentes de React en el DOM del navegador.
-- **zustand**: Librería ligera para manejo de estado global en aplicaciones React.
+## Como contribuir
 
+La colaboracion es bienvenida. Propuestas y PRs son el motor de DevSwiss.
 
-### Dependencias de desarrollo
+1. Haz un fork y crea una rama con tu feature o fix.
+2. Asegura que la herramienta mantenga el enfoque privacy-first y zero-friction.
+3. Abre un Pull Request con una descripcion clara del problema y la solucion.
 
-- **@tailwindcss/postcss**: Integración de Tailwind CSS con PostCSS para procesamiento de estilos.
-- **@types/node**: Tipos de TypeScript para Node.js, necesarios para el desarrollo y compilación.
-- **@types/react**: Tipos de TypeScript para React.
-- **@types/react-dom**: Tipos de TypeScript para React DOM.
-- **eslint**: Herramienta para análisis y formateo de código, ayuda a mantener buenas prácticas.
-- **eslint-config-next**: Configuración recomendada de ESLint para proyectos Next.js.
-- **tailwindcss**: Framework de utilidades CSS para crear interfaces modernas y responsivas.
-- **typescript**: Superset de JavaScript que añade tipado estático, mejorando la robustez del código.
+## Licencia
 
-
-## Aprende más
-
-Para aprender más sobre Next.js, revisa los siguientes recursos:
-
-- [Documentación de Next.js](https://nextjs.org/docs) - aprende sobre las características y API de Next.js.
-- [Aprende Next.js](https://nextjs.org/learn) - un tutorial interactivo de Next.js.
-
-También puedes visitar [el repositorio de Next.js en GitHub](https://github.com/vercel/next.js); tus comentarios y contribuciones son bienvenidos.
-
-
-## Despliegue en Vercel
-
-La forma más sencilla de desplegar tu aplicación Next.js es usando la [Plataforma Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) de los creadores de Next.js.
-
-Consulta nuestra [documentación de despliegue de Next.js](https://nextjs.org/docs/app/building-your-application/deploying) para más detalles.
+Este proyecto usa licencia MIT.

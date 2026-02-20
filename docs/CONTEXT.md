@@ -12,6 +12,7 @@ Este archivo define las reglas que deben respetarse antes de proponer o implemen
 - **Sin backend para datos de usuario**: no enviar payloads sensibles (RUT, JSON, hashes, tokens) a servidores.
 - **Persistencia local**: favoritos/recientes/configuración en `localStorage`.
 - **Modularidad atómica**: cada herramienta debe ser independiente y no añadir peso innecesario al resto.
+- **Hosting**: despliegue en EC2 con Docker (no S3).
 
 ## 3) Reglas de navegación y UX
 - El flujo principal es **Command-First** (Command Palette + Quick Actions).
