@@ -4,6 +4,7 @@ import { JetBrains_Mono } from 'next/font/google';
 import { Bell, Command, Terminal } from 'lucide-react';
 
 import { ToolGrid } from '@/components/dashboard/ToolGrid';
+import { useUIStore } from '@/store/useUIStore';
 
 const jetBrains = JetBrains_Mono({
     subsets: ['latin'],
@@ -12,6 +13,8 @@ const jetBrains = JetBrains_Mono({
 });
 
 export default function Home() {
+    const toggleCommandPalette = useUIStore((state) => state.toggleCommandPalette);
+
     return (
         <div className={`${jetBrains.className} cyber-page cyber-scroll selection:bg-[#00FF41] selection:text-black`}>
             <div className="cyber-scanline" />
@@ -32,17 +35,17 @@ export default function Home() {
                     </div>
 
                     <nav className="hidden items-center gap-1 lg:flex">
-                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#">
+                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#tools">
                             [01] Tools
                         </a>
-                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#">
-                            [02] Docs
+                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#command">
+                            [02] Command
                         </a>
-                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#">
-                            [03] API
+                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#filters">
+                            [03] Filters
                         </a>
-                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#">
-                            [04] Community
+                        <a className="px-4 py-1 text-xs font-bold uppercase transition-all hover:bg-[#00FF41] hover:text-black" href="#system">
+                            [04] System
                         </a>
                     </nav>
 
@@ -70,9 +73,50 @@ export default function Home() {
                     <div className="h-32 w-px bg-linear-to-t from-transparent via-[#00FF41] to-transparent" />
                 </div>
 
-                <ToolGrid />
+                <section className="mb-12 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.6fr)]" id="command">
+                    <div className="space-y-4">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">Developer Swiss Army Knife</p>
+                        <h2 className="text-3xl font-bold uppercase tracking-tight text-white sm:text-4xl">
+                            Encuentra, ejecuta y aprende en segundos
+                        </h2>
+                        <p className="max-w-xl text-sm text-zinc-400">
+                            DevSwiss organiza utilidades criticas con privacidad local y una Command Palette para ir directo a la accion.
+                        </p>
+                        <div className="flex flex-wrap items-center gap-3">
+                            <a
+                                href="#tools"
+                                className="inline-flex items-center gap-2 rounded-lg border border-[#00FF41] bg-[#00FF41] px-4 py-2 text-xs font-bold uppercase text-black transition hover:-translate-y-0.5"
+                            >
+                                Explorar herramientas
+                            </a>
+                            <button
+                                type="button"
+                                onClick={toggleCommandPalette}
+                                className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-4 py-2 text-xs font-bold uppercase text-zinc-200 transition hover:border-[#00F0FF] hover:text-[#00F0FF]"
+                            >
+                                Abrir Command Palette
+                            </button>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Ctrl + K</span>
+                        </div>
+                    </div>
+                    <div className="cyber-panel cyber-border-green flex flex-col gap-4 p-5 text-sm text-zinc-300">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold uppercase tracking-widest text-[#00FF41]">Quick Start</span>
+                            <span className="text-[10px] text-zinc-500">Local-first</span>
+                        </div>
+                        <ul className="space-y-2 text-xs text-zinc-400">
+                            <li>1. Busca por herramienta, categoria o keyword.</li>
+                            <li>2. Ejecuta sin salir del navegador.</li>
+                            <li>3. Guarda favoritos y vuelve con un click.</li>
+                        </ul>
+                    </div>
+                </section>
 
-                <footer className="relative mt-24 border-t-2 border-zinc-800 pt-12">
+                <section id="tools">
+                    <ToolGrid />
+                </section>
+
+                <footer className="relative mt-24 border-t-2 border-zinc-800 pt-12" id="system">
                     <div className="absolute -top-0.5 left-0 h-1 w-16 bg-[#00FF41]" />
                     <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
                         <div className="flex flex-col gap-1">

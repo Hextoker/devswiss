@@ -222,23 +222,28 @@ export function ToolGrid() {
     return (
         <div className="space-y-10">
             <div className="mb-12">
-                <div className="cyber-panel cyber-border-green p-0.5">
-                    <div className="flex items-center gap-4 bg-black/40 p-4">
-                        <span className="font-bold text-[#00FF41]">/&gt;</span>
-                        <input
-                            className="w-full border-none bg-transparent text-lg uppercase text-zinc-200 placeholder:text-zinc-700 focus:ring-0"
-                            placeholder="SEARCH_DATABASE..."
-                            value={searchTerm}
-                            onChange={(event) => setSearchTerm(event.target.value)}
-                            type="text"
-                        />
-                        <div className="hidden border border-[#00FF41] px-3 py-1 text-[10px] font-bold text-[#00FF41] sm:block">
-                            KEY: CTRL_K
+                <div className="cyber-panel cyber-border-green p-0.5" id="search">
+                    <div className="flex flex-col gap-3 bg-black/40 p-4">
+                        <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">
+                            Search Tools
+                            <span className="hidden border border-[#00FF41] px-3 py-1 text-[10px] font-bold text-[#00FF41] sm:block">
+                                KEY: CTRL_K
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <span className="font-bold text-[#00FF41]">/&gt;</span>
+                            <input
+                                className="w-full border-none bg-transparent text-lg uppercase text-zinc-200 placeholder:text-zinc-700 focus:ring-0"
+                                placeholder="Busca por herramienta, categoria o keyword"
+                                value={searchTerm}
+                                onChange={(event) => setSearchTerm(event.target.value)}
+                                type="text"
+                            />
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-10 flex flex-wrap gap-3">
+                <div className="mt-10 flex flex-wrap gap-3" id="filters">
                     {filters.map((filter, index) => {
                         const isActive = filter.value === activeFilter;
                         const activeClass = isActive
@@ -274,14 +279,7 @@ export function ToolGrid() {
                     const Icon = iconMap[tool.icon] ?? Code2;
                     const accent = accentMap[tool.accent];
                     const isFavorite = favorites.includes(tool.id);
-                    const staggerClass =
-                        index % 3 === 0
-                            ? 'lg:mt-4'
-                            : index % 3 === 1
-                              ? 'lg:-mt-4'
-                              : 'lg:mt-8';
 
-                    const label = tool.spotlight ? 'STATUS: NEW' : `TYPE: ${tool.category.toUpperCase()}`;
                     const panelTitle = tool.name.replace(/\s+/g, '_').toUpperCase();
 
                     return (
@@ -296,7 +294,7 @@ export function ToolGrid() {
                                     handleOpenTool(tool);
                                 }
                             }}
-                            className={`cyber-panel group cursor-pointer p-6 transition-all ${accent.borderClass} ${accent.buttonHoverClass} ${staggerClass}`}
+                            className={`cyber-panel cyber-panel-solid group cursor-pointer p-6 transition-all ${accent.borderClass} ${accent.buttonHoverClass}`}
                         >
                             <div className="mb-8 flex items-start justify-between">
                                 <button
@@ -321,14 +319,16 @@ export function ToolGrid() {
                                 </div>
 
                                 <div className="flex-1 px-4">
-                                    <div className={`mb-1 text-[8px] font-bold uppercase tracking-tighter ${accent.labelTextClass}`}>
-                                        {tool.category.toUpperCase()}
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <span className={`text-[10px] font-bold uppercase tracking-widest ${accent.labelTextClass}`}>
+                                            {tool.category.toUpperCase()}
+                                        </span>
+                                        {tool.spotlight && (
+                                            <span className="rounded-full border border-amber-400/60 bg-amber-500/10 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-100">
+                                                NEW
+                                            </span>
+                                        )}
                                     </div>
-                                    <span
-                                        className={`inline-block border px-2 py-0.5 text-[10px] font-bold uppercase ${accent.iconBorderClass} ${accent.labelTextClass}`}
-                                    >
-                                        {label}
-                                    </span>
                                 </div>
                             </div>
 
@@ -340,7 +340,7 @@ export function ToolGrid() {
 
                             <div className="flex items-center justify-between">
                                 <div className={`text-[10px] font-bold uppercase tracking-widest ${accent.actionTextClass}`}>
-                                    &gt; EXECUTE_COMMAND
+                                    &gt; OPEN_TOOL
                                 </div>
                                 <div className={`h-0.5 w-8 ${accent.lineClass}`} />
                             </div>

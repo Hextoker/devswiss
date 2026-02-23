@@ -15,8 +15,8 @@ const STATUS_STYLES = {
 
 export default function RutValidatorPage() {
     const hasPrefilled = useRef(false);
-    const [input, setInput] = useState<string>('12.345.678-5');
-    const [validation, setValidation] = useState<RutValidationResult>(() => validateRut('12.345.678-5'));
+    const [input, setInput] = useState<string>('');
+    const [validation, setValidation] = useState<RutValidationResult>(() => validateRut(''));
     const [copyState, setCopyState] = useState<Record<FormatKey, CopyState>>({
         pretty: 'idle',
         dashed: 'idle',
@@ -87,9 +87,9 @@ export default function RutValidatorPage() {
     );
 
     const currentFormats = [
-        { key: 'pretty' as const, label: '12.345.678-9', helper: 'Con puntos + guion' },
-        { key: 'dashed' as const, label: '12345678-9', helper: 'Plano con guion' },
-        { key: 'compact' as const, label: '12345678', helper: 'Solo cuerpo' },
+        { key: 'pretty' as const, label: 'Con puntos y guion', helper: 'Formato recomendado' },
+        { key: 'dashed' as const, label: 'Plano con guion', helper: 'Sin puntos' },
+        { key: 'compact' as const, label: 'Solo cuerpo', helper: 'Sin DV ni guion' },
     ];
 
     const validationDetails = [
@@ -109,7 +109,7 @@ export default function RutValidatorPage() {
                         <div>
                             <p className="text-xs uppercase tracking-[0.25em] text-cyan-300/70">DevSwiss</p>
                             <h1 className="text-2xl font-semibold tracking-tight text-white">RUT Validator</h1>
-                            <p className="text-sm text-slate-300">Valida, formatea y genera RUTs con Módulo 11 y cero fricción.</p>
+                            <p className="text-sm text-slate-300">Valida y genera RUTs con Módulo 11, todo local y en segundos.</p>
                         </div>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs text-cyan-50/90">
@@ -128,45 +128,49 @@ export default function RutValidatorPage() {
                             <p className="font-mono text-sm text-cyan-100">
                                 {validation.cleaned ? validation.cleaned : '········'}
                             </p>
-                            <div className="ml-auto flex items-center gap-2">
-                                <button
-                                    onClick={handleGenerate}
-                                    className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-100 transition hover:-translate-y-0.5 hover:border-emerald-400/50"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9" /><path d="M3 9h6" /><path d="M21 12a9 9 0 0 1-9 9" /><path d="M21 15h-6" /><path d="M9 9v12" /><path d="M15 3v12" /></svg>
-                                    Generar RUT válido
-                                </button>
-                                <ExplainButton toolName="RUT Validator" context={aiContext} />
-                            </div>
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-semibold text-white">RUT chileno</label>
+                        <label className="text-sm font-semibold text-white">RUT chileno (con o sin DV)</label>
                             <input
                                 value={input}
                                 onChange={(e) => handleInputChange(e.target.value)}
                                 placeholder="Ej: 12.345.678-9 o 12345678"
                                 className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3 text-lg font-semibold tracking-wide text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/40"
                             />
-                            <p className="text-sm text-white/70">La entrada se limpia al vuelo (solo dígitos, puntos, guion y K).</p>
+                            <p className="text-sm text-white/70">Acepta K y guion. Limpiamos caracteres no válidos en vivo.</p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            <button
+                                onClick={handleGenerate}
+                                className="inline-flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/15 px-4 py-2 text-xs font-semibold text-emerald-100 transition hover:-translate-y-0.5 hover:border-emerald-400/60"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 0 1 9-9" /><path d="M3 9h6" /><path d="M21 12a9 9 0 0 1-9 9" /><path d="M21 15h-6" /><path d="M9 9v12" /><path d="M15 3v12" /></svg>
+                                Generar RUT válido
+                            </button>
+                            {validation.missingDV && validation.expectedDV && (
+                                <button
+                                    onClick={handleAutoComplete}
+                                    className="inline-flex items-center gap-2 rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-3 py-2 text-xs font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/60"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5L20 7" /></svg>
+                                    Autocompletar DV
+                                </button>
+                            )}
+                            <ExplainButton toolName="RUT Validator" context={aiContext} />
                         </div>
 
                         <div className="rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/80 shadow-inner">
-                            <p className="font-semibold text-white">Feedback</p>
-                            <p className="mt-1 text-sm leading-relaxed">
-                                {validation.message}
-                                {validation.missingDV && validation.expectedDV && (
-                                    <button
-                                        onClick={handleAutoComplete}
-                                        className="ml-2 inline-flex items-center gap-1 rounded-md border border-cyan-400/40 bg-cyan-500/10 px-2 py-1 text-xs font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/60"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5L20 7" /></svg>
-                                        Autocompletar DV
-                                    </button>
-                                )}
-                            </p>
+                            <p className="font-semibold text-white">Estado</p>
+                            <p className="mt-1 text-sm leading-relaxed">{validation.message}</p>
                         </div>
 
+                        <div className="flex items-center gap-3 text-xs uppercase tracking-wide text-cyan-200">
+                            <span className="h-px flex-1 bg-cyan-400/20" />
+                            Resultados listos para copiar
+                            <span className="h-px flex-1 bg-cyan-400/20" />
+                        </div>
                         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                             {currentFormats.map(({ key, label, helper }) => (
                                 <div
@@ -199,31 +203,31 @@ export default function RutValidatorPage() {
                     </section>
 
                     <aside className="space-y-4">
-                        <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5 text-sm text-cyan-50 shadow-[0_12px_60px_-35px_rgba(56,189,248,0.45)]">
-                            <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-cyan-200">
+                        <details className="rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5 text-sm text-cyan-50 shadow-[0_12px_60px_-35px_rgba(56,189,248,0.45)]">
+                            <summary className="flex cursor-pointer items-center gap-2 text-xs uppercase tracking-wide text-cyan-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16v16H4z" /><path d="M9 4v16" /><path d="M4 9h5" /><path d="M4 15h5" /></svg>
                                 Cómo validamos
-                            </div>
-                            <ul className="mt-2 space-y-2 text-cyan-50/90">
+                            </summary>
+                            <ul className="mt-3 space-y-2 text-cyan-50/90">
                                 <li>· Limpieza inteligente: quitamos caracteres no válidos y detectamos si falta el DV.</li>
                                 <li>· Módulo 11 en TypeScript puro para calcular el DV esperado.</li>
                                 <li>· Si el DV no coincide, resaltamos el error y proponemos el valor correcto.</li>
                                 <li>· Botón de IA explica el algoritmo y su rol en la integridad de datos.</li>
                             </ul>
-                        </div>
+                        </details>
 
-                        <div className="rounded-2xl border border-white/10 bg-black/50 p-5 text-sm text-white/80 shadow-[0_12px_60px_-35px_rgba(0,0,0,0.7)]">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-white/60">
+                        <details className="rounded-2xl border border-white/10 bg-black/50 p-5 text-sm text-white/80 shadow-[0_12px_60px_-35px_rgba(0,0,0,0.7)]">
+                            <summary className="flex cursor-pointer items-center justify-between text-xs uppercase tracking-wide text-white/60">
+                                <span className="flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                                     Estado actual
-                                </div>
+                                </span>
                                 {!validation.missingDV && (
                                     <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-200">
                                         Módulo 11 listo
                                     </span>
                                 )}
-                            </div>
+                            </summary>
                             <div className="mt-3 grid gap-2">
                                 {validationDetails.map((item) => (
                                     <div
@@ -242,7 +246,7 @@ export default function RutValidatorPage() {
                                 </p>
                                 <p className="text-xs text-white/60">Siempre validado localmente con el mismo algoritmo.</p>
                             </div>
-                        </div>
+                        </details>
                     </aside>
                 </div>
         </div>
