@@ -1,4 +1,4 @@
-export type IntentionKey = 'rut' | 'json' | 'cron' | 'hexColor' | 'base64' | 'jwt';
+export type IntentionKey = 'rut' | 'json' | 'cron' | 'hexColor' | 'base64' | 'jwt' | 'sql' | 'svg';
 
 export type QuickAction = {
     key: IntentionKey;
@@ -21,6 +21,8 @@ const BASE64_PATTERN = '(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]
 const BASE64_PATTERN_ANCHORED = `(?=.{16,}$)${BASE64_PATTERN}`;
 const DATA_URI_PATTERN = 'data:[^,\\s]*;base64,[A-Za-z0-9+/=\\s]+';
 const JWT_PATTERN = '([A-Za-z0-9_-]+)\\.([A-Za-z0-9_-]+)\\.([A-Za-z0-9_-]*)';
+const SQL_PATTERN = '^(?:\\s*(?:with|select|insert|update|delete|create|alter|drop|truncate)\\b[\\s\\S]+)$';
+const SVG_PATTERN = '^\\s*<svg[\\s\\S]*<\\/svg>\\s*$';
 
 const intentions: IntentionDefinition[] = [
     {
@@ -72,6 +74,22 @@ const intentions: IntentionDefinition[] = [
         normalize: (value) => value.trim(),
         buildPath: (value) =>
             `/tools/base64-lab?mode=decode&payload=${encodeURIComponent(value)}`,
+    },
+    {
+        key: 'svg',
+        title: 'Optimizar SVG',
+        description: 'Abre SVG Optimizer con el markup cargado y listo para limpiar.',
+        pattern: new RegExp(SVG_PATTERN, 'i'),
+        normalize: (value) => value.trim(),
+        buildPath: (value) => `/tools/svg-optimizer?svg=${encodeURIComponent(value)}`,
+    },
+    {
+        key: 'sql',
+        title: 'Formatear SQL',
+        description: 'Abre SQL Formatter con la query lista para beautify.',
+        pattern: new RegExp(SQL_PATTERN, 'i'),
+        normalize: (value) => value.trim(),
+        buildPath: (value) => `/tools/sql-formatter?sql=${encodeURIComponent(value)}`,
     },
 ];
 

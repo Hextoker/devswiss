@@ -13,6 +13,9 @@ const toolPaths = [
   "/tools/glassmorphism-gen",
   "/tools/jwt-inspector",
   "/tools/security-audit",
+  "/tools/cors-tester",
+  "/tools/svg-optimizer",
+  "/tools/sql-formatter",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

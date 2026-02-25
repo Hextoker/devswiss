@@ -53,6 +53,19 @@ export const tools: ToolMeta[] = [
         spotlight: true,
     },
     {
+        id: 'cors-tester',
+        name: 'CORS Tester',
+        description:
+            'Ejecuta fetch con headers personalizados, identifica preflight y diagnostica bloqueos de origen.',
+        path: '/tools/cors-tester',
+        category: 'Seguridad',
+        icon: 'shield',
+        accent: 'cyan',
+        tagline: 'Preflight visible y errores de origen explicados',
+        keywords: ['cors', 'preflight', 'fetch', 'headers', 'access-control', 'seguridad'],
+        spotlight: true,
+    },
+    {
         id: 'hash-generator',
         name: 'Hash Generator',
         description:
@@ -86,6 +99,17 @@ export const tools: ToolMeta[] = [
         accent: 'blue',
         tagline: 'Lint, minify y validación sin enviar tus datos',
         keywords: ['json', 'format', 'minify', 'validar', 'lint', 'beautify'],
+    },
+    {
+        id: 'sql-formatter',
+        name: 'SQL Formatter',
+        description: 'Formatea queries SQL (Postgres/MySQL) con resaltado de sintaxis local.',
+        path: '/tools/sql-formatter',
+        category: 'Datos',
+        icon: 'json',
+        accent: 'violet',
+        tagline: 'Queries legibles en segundos, sin enviar datos',
+        keywords: ['sql', 'postgres', 'mysql', 'formatter', 'beautify', 'query'],
     },
     {
         id: 'base64-lab',
@@ -134,5 +158,16 @@ export const tools: ToolMeta[] = [
         accent: 'cyan',
         tagline: 'Recetas UI con presets y export CSS inmediata',
         keywords: ['css', 'glass', 'blur', 'backdrop-filter', 'ui', 'glassmorphism'],
+    },
+    {
+        id: 'svg-optimizer',
+        name: 'SVG Optimizer',
+        description: 'Limpia y minifica SVG con SVGO browser, via drag-and-drop.',
+        path: '/tools/svg-optimizer',
+        category: 'Diseño',
+        icon: 'glass',
+        accent: 'emerald',
+        tagline: 'SVG ligero con viewBox preservado',
+        keywords: ['svg', 'optimize', 'svgo', 'minify', 'vector', 'design'],
     },
 ];

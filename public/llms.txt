@@ -18,9 +18,9 @@ DevSwiss is a high-performance, privacy-first collection of developer utilities 
 - **Glassmorphism Generator**: CSS glass UI presets using backdrop-filter blur, opacity, and gradients, 100% client-side.
 - **JWT Inspector**: JWT decode, header/payload claims, base64url parsing, and exp/iat review, 100% client-side.
 - **Security Audit**: Web security header checks (CSP, HSTS, XFO) with OWASP guidance, 100% client-side.
-- **CORS Tester**: Fetch-based CORS checks with preflight detection and Access-Control-* hints, 100% client-side.
-- **SVG Optimizer**: SVGO-based SVG cleanup, minify, viewBox preservation, 100% client-side.
-- **SQL Formatter**: SQL formatting for Postgres/MySQL with syntax highlighting, 100% client-side.
+- **CORS Validator**: Roadmap placeholder for CORS policy checks (preflight, Access-Control-Allow-*), 100% client-side.
+- **SVG Optimizer**: Roadmap placeholder for SVG optimize/sanitize, viewBox fixes, and accessibility, 100% client-side.
+- **SQL Formatter**: Roadmap placeholder for SQL formatting, linting, and dialect keywords, 100% client-side.
 
 ## Technical Integration
 - **Navigation**: Uses Next.js App Router with consistent `ToolLayout` for unified UX.

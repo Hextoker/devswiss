@@ -6,9 +6,10 @@ import { useAIExplain } from '@/hooks/useAIExplain';
 interface ExplainButtonProps {
     toolName: string;
     context: string;
+    label?: string;
 }
 
-export const ExplainButton: React.FC<ExplainButtonProps> = ({ toolName, context }) => {
+export const ExplainButton: React.FC<ExplainButtonProps> = ({ toolName, context, label }) => {
     const { explanation, loading, error, explain } = useAIExplain();
     const [isOpen, setIsOpen] = useState(false);
     const popoverRef = useRef<HTMLDivElement>(null);
@@ -100,7 +101,7 @@ export const ExplainButton: React.FC<ExplainButtonProps> = ({ toolName, context 
                 >
                     <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
                 </svg>
-                Explicar con IA
+                {label ?? 'Explicar con IA'}
             </button>
 
             {isOpen && (
