@@ -1,4 +1,4 @@
 declare module 'svgo/dist/svgo.browser' {
-    import type { optimize } from 'svgo';
+    import { optimize } from 'svgo';
     export { optimize };
 }
