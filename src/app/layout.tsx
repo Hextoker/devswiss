@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -14,6 +15,10 @@ const inter = localFont({
 });
 
 const siteUrl = getSiteUrl();
+const isProduction = process.env.NODE_ENV === "production";
+const umamiUrl = process.env.NEXT_PUBLIC_UMAMI_URL;
+const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+const umamiScriptSrc = umamiUrl ?? "";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -61,6 +66,13 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {isProduction && umamiUrl && umamiWebsiteId ? (
+          <Script
+            data-website-id={umamiWebsiteId}
+            src={umamiScriptSrc}
+            strategy="afterInteractive"
+          />
+        ) : null}
       </head>
       <body className={`${inter.variable} font-sans`} suppressHydrationWarning>
         <ThemeProvider>
