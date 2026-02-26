@@ -1,11 +1,12 @@
-
 services:
   devswiss:
     build: .
     container_name: devswiss-app
-    restart: unless-stopped
+    ports:
+      - "3000:3000"
     environment:
       NODE_ENV: production
+    restart: unless-stopped
     networks:
       - internal
 
@@ -22,7 +23,7 @@ services:
     depends_on:
       - postgres
     expose:
-      - "3000"   # 👈 SOLO visible dentro de Docker
+      - "3000"        # 👈 solo visible dentro de Docker
     networks:
       - internal
 
