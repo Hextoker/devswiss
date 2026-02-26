@@ -1,25 +1,45 @@
-version: "3.8"
 
 services:
   devswiss:
     build: .
-    ports:
-      - "3000:3000"
+    container_name: devswiss-app
+    restart: unless-stopped
     environment:
       NODE_ENV: production
-    restart: unless-stopped
+    networks:
+      - internal
 
   umami:
-    image: ghcr.io/umami-software/umami:postgresql-latest # La imagen base autodetecta SQLite por la URL
-    ports:
-      - "3001:3000" # Accederás al panel por el puerto 3001 de tu EC2
+    image: ghcr.io/umami-software/umami:postgresql-v2.13.2
+    container_name: umami
+    restart: always
+    env_file:
+      - .env
     environment:
-      - DATABASE_URL=file:/priority/data/umami.db # Ruta interna al archivo SQLite
-      - DATABASE_TYPE=sqlite
-      - APP_SECRET=${UMAMI_SECRET} # Variable que definiremos en tu .env
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      APP_SECRET: ${UMAMI_APP_SECRET}
+      APP_URL: ${UMAMI_APP_URL}
+    depends_on:
+      - postgres
+    expose:
+      - "3000"   # 👈 SOLO visible dentro de Docker
+    networks:
+      - internal
+
+  postgres:
+    image: postgres:14
+    container_name: umami-postgres
+    restart: always
+    env_file:
+      - .env
     volumes:
-      - umami-data:/priority/data # Persistencia para que no pierdas tus estadísticas
-    restart: unless-stopped
+      - umami_postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
 
 volumes:
-  umami-data:
+  umami_postgres_data:
+
+networks:
+  internal:
+    driver: bridge
