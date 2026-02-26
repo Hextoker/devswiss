@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CommandPalette } from "@/components/CommandPalette";
+import { Footer } from "@/components/Footer";
 import { getSiteUrl } from "@/utils/siteUrl";
 
 const inter = localFont({
@@ -65,6 +66,7 @@ export default function RootLayout({
         <ThemeProvider>
           <CommandPalette />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

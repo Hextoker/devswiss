@@ -1,7 +1,7 @@
 'use client';
 
 import { JetBrains_Mono } from 'next/font/google';
-import { Bell, Command, Terminal } from 'lucide-react';
+import { Bell, Terminal } from 'lucide-react';
 
 import { ToolGrid } from '@/components/dashboard/ToolGrid';
 import { useUIStore } from '@/store/useUIStore';
@@ -116,31 +116,6 @@ export default function Home() {
                     <ToolGrid />
                 </section>
 
-                <footer className="relative mt-24 border-t-2 border-zinc-800 pt-12" id="system">
-                    <div className="absolute -top-0.5 left-0 h-1 w-16 bg-[#00FF41]" />
-                    <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-                        <div className="flex flex-col gap-1">
-                            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">
-                                System Version: 2.4.0-STABLE
-                            </p>
-                            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">
-                                BUILD: 2026.02.18_CYBER_HUD
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-2 w-2 animate-pulse rounded-full bg-[#00FF41] shadow-[0_0_8px_#00FF41]" />
-                            <p className="text-xs font-bold uppercase tracking-widest text-[#00FF41]">
-                                CONNECTED // ENCRYPTION: AES-256-BIT
-                            </p>
-                        </div>
-                        <p className="group cursor-default text-xs font-bold uppercase tracking-widest">
-                            © <span className="transition-colors group-hover:text-[#BC00FF]">DEVSWISS_CORE</span>
-                        </p>
-                    </div>
-                    <div className="mt-6 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-zinc-500">
-                        <Command className="h-3.5 w-3.5" /> Ctrl + K for command palette
-                    </div>
-                </footer>
             </main>
         </div>
     );

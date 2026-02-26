@@ -5,6 +5,7 @@ La navaja suiza definitiva para developers. DevSwiss es una suite de utilidades 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED)](https://www.docker.com/)
 [![Tailwind](https://img.shields.io/badge/TailwindCSS-38B2AC)](https://tailwindcss.com/)
+[![Visit devswiss.cl](https://img.shields.io/badge/%F0%9F%8C%90-Visit%20devswiss.cl-00C853)](https://devswiss.cl)
 
 ## Propuesta de valor
 
@@ -35,6 +36,10 @@ DevSwiss prioriza la seguridad por diseno:
 - La persistencia se mantiene en `localStorage` (favoritos, recientes, preferencias).
 - Las operaciones criticas se ejecutan en el cliente (JS/TS/WASM), evitando enviar payloads sensibles a servidores.
 - Esto reduce superficie de ataque y elimina riesgos de exfiltracion accidental.
+
+## Why Open Source?
+
+La transparencia es vital cuando se procesan datos sensibles. Abrir el codigo permite a cualquier persona verificar que el tratamiento de RUT, JWT y otros payloads ocurre localmente, sin telemetria oculta ni dependencias opacas. Esa audibilidad es la base de la confianza en DevSwiss.
 
 ## Guia para IA (LLMs)
 
