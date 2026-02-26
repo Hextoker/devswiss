@@ -37,6 +37,14 @@ DevSwiss prioriza la seguridad por diseno:
 - Las operaciones criticas se ejecutan en el cliente (JS/TS/WASM), evitando enviar payloads sensibles a servidores.
 - Esto reduce superficie de ataque y elimina riesgos de exfiltracion accidental.
 
+## Monitoreo con Umami
+
+DevSwiss incorpora Umami como analitica privacy-first para entender el uso real de la plataforma sin recolectar datos sensibles.
+
+- **Cantidad de usuarios**: permite observar el volumen de usuarios activos y tendencias de crecimiento.
+- **Uso por herramienta**: muestra que utilidades se usan mas y en que momentos, para priorizar mejoras.
+- **Mejora continua**: los hallazgos guian optimizaciones, nuevas funcionalidades y ajustes de UX con impacto medible.
+
 ## Why Open Source?
 
 La transparencia es vital cuando se procesan datos sensibles. Abrir el codigo permite a cualquier persona verificar que el tratamiento de RUT, JWT y otros payloads ocurre localmente, sin telemetria oculta ni dependencias opacas. Esa audibilidad es la base de la confianza en DevSwiss.

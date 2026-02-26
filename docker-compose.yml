@@ -8,3 +8,18 @@ services:
     environment:
       NODE_ENV: production
     restart: unless-stopped
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest # La imagen base autodetecta SQLite por la URL
+    ports:
+      - "3001:3000" # Accederás al panel por el puerto 3001 de tu EC2
+    environment:
+      - DATABASE_URL=file:/priority/data/umami.db # Ruta interna al archivo SQLite
+      - DATABASE_TYPE=sqlite
+      - APP_SECRET=${UMAMI_SECRET} # Variable que definiremos en tu .env
+    volumes:
+      - umami-data:/priority/data # Persistencia para que no pierdas tus estadísticas
+    restart: unless-stopped
+
+volumes:
+  umami-data:
