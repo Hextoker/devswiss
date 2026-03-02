@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Bot
+Allow: /
+
+Sitemap: https://devswiss.cl/sitemap.xml

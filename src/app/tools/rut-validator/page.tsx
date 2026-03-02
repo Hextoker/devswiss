@@ -1,12 +1,16 @@
 
 import { Metadata } from 'next';
+import { getEmojiFavicon } from '@/utils/emojiFavicon';
 
 export const metadata: Metadata = {
-    title: 'Validador de RUT Chileno Online | Gratis y Privado',
+    title: '🪪 Validador de RUT Chileno Online | Gratis y Privado',
     description: 'Valida y formatea RUTs chilenos al instante. Herramienta 100% gratuita que procesa los datos en tu navegador para total privacidad.',
     keywords: ['validador rut', 'rut chileno', 'validar rut gratis', 'formato rut', 'algoritmo modulo 11', 'devswiss', 'rut generator', 'online'],
+    icons: {
+        icon: [{ url: getEmojiFavicon('🪪') }],
+    },
     openGraph: {
-        title: 'Validador de RUT Chileno Online | Gratis y Privado | DevSwiss',
+        title: '🪪 Validador de RUT Chileno Online | Gratis y Privado | DevSwiss',
         description: 'Valida y formatea RUTs chilenos al instante. Herramienta 100% gratuita que procesa los datos en tu navegador para total privacidad.',
     },
 };

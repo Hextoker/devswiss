@@ -1,12 +1,16 @@
 import { Metadata } from 'next';
+import { getEmojiFavicon } from '@/utils/emojiFavicon';
 
 export const metadata: Metadata = {
-    title: 'SQL Formatter | Formatea Queries Postgres y MySQL',
+    title: '🧾 SQL Formatter | Formatea Queries Postgres y MySQL',
     description:
         'Editor con resaltado de sintaxis para formatear SQL (Postgres/MySQL) localmente con sql-formatter.',
     keywords: ['sql formatter', 'postgres', 'mysql', 'format sql', 'devswiss', 'sql beautify'],
+    icons: {
+        icon: [{ url: getEmojiFavicon('🧾') }],
+    },
     openGraph: {
-        title: 'SQL Formatter | Formatea Queries Postgres y MySQL | DevSwiss',
+        title: '🧾 SQL Formatter | Formatea Queries Postgres y MySQL | DevSwiss',
         description:
             'Editor con resaltado de sintaxis para formatear SQL (Postgres/MySQL) localmente con sql-formatter.',
     },

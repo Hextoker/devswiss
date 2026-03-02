@@ -1,12 +1,16 @@
 import { Metadata } from 'next';
+import { getEmojiFavicon } from '@/utils/emojiFavicon';
 
 export const metadata: Metadata = {
-    title: 'JWT Debugger | Inspector de JSON Web Tokens',
+    title: '🛡️ JWT Debugger | Inspector de JSON Web Tokens',
     description:
         'Decodifica JWTs localmente, analiza claims estandar y detecta configuraciones inseguras con explicaciones educativas.',
     keywords: ['jwt', 'token', 'jwt debugger', 'jwt inspector', 'claims', 'auth', 'devswiss'],
+    icons: {
+        icon: [{ url: getEmojiFavicon('🛡️') }],
+    },
     openGraph: {
-        title: 'JWT Debugger | Inspector de JSON Web Tokens | DevSwiss',
+        title: '🛡️ JWT Debugger | Inspector de JSON Web Tokens | DevSwiss',
         description:
             'Decodifica JWTs localmente, analiza claims estandar y detecta configuraciones inseguras con explicaciones educativas.',
     },

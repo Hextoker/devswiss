@@ -1,12 +1,16 @@
 import { Metadata } from 'next';
+import { getEmojiFavicon } from '@/utils/emojiFavicon';
 
 export const metadata: Metadata = {
-    title: 'CORS Tester | Diagnostica Preflight y Errores de Origen',
+    title: '🛡️ CORS Tester | Diagnostica Preflight y Errores de Origen',
     description:
         'Prueba peticiones fetch, configura headers y detecta bloqueos CORS con lectura de preflight y respuestas en vivo.',
     keywords: ['cors tester', 'preflight', 'fetch', 'headers', 'access-control', 'devswiss'],
+    icons: {
+        icon: [{ url: getEmojiFavicon('🛡️') }],
+    },
     openGraph: {
-        title: 'CORS Tester | Diagnostica Preflight y Errores de Origen | DevSwiss',
+        title: '🛡️ CORS Tester | Diagnostica Preflight y Errores de Origen | DevSwiss',
         description:
             'Prueba peticiones fetch, configura headers y detecta bloqueos CORS con lectura de preflight y respuestas en vivo.',
     },

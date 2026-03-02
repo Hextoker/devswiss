@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
+import { getEmojiFavicon } from '@/utils/emojiFavicon';
 
 export const metadata: Metadata = {
-    title: 'Base64 & Media Laboratory | Codificar y Decodificar Base64',
+    title: '🔐 Base64 & Media Laboratory | Codificar y Decodificar Base64',
     description: 'Codifica texto, decodifica Base64 y convierte archivos en Data URI directamente en tu navegador. Vista previa para imágenes y soporte local 100%.',
     keywords: [
         'base64',
@@ -12,8 +13,11 @@ export const metadata: Metadata = {
         'devswiss',
         'data uri generator',
     ],
+    icons: {
+        icon: [{ url: getEmojiFavicon('🔐') }],
+    },
     openGraph: {
-        title: 'Base64 & Media Laboratory | DevSwiss',
+        title: '🔐 Base64 & Media Laboratory | DevSwiss',
         description: 'Codifica texto, decodifica Base64 y genera Data URI con vista previa de imágenes en el navegador.',
     },
 };

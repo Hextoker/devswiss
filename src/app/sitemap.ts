@@ -26,10 +26,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: baseUrl,
       lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
     },
     ...toolPaths.map((path) => ({
       url: `${baseUrl}${path}`,
       lastModified,
+      changeFrequency: "weekly" as const,
+      priority: path === "/tools/rut-validator" ? 1 : 0.7,
     })),
   ];
 }

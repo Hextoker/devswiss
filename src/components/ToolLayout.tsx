@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ArrowLeft, Terminal } from 'lucide-react';
 import { JetBrains_Mono } from 'next/font/google';
 import { useUIStore } from '@/store/useUIStore';
@@ -22,7 +22,9 @@ const jetBrains = JetBrains_Mono({
 
 export function ToolLayout({ children }: ToolLayoutProps) {
     const router = useRouter();
+    const pathname = usePathname();
     const { isCommandPaletteOpen } = useUIStore();
+    const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -36,6 +38,33 @@ export function ToolLayout({ children }: ToolLayoutProps) {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isCommandPaletteOpen, router]);
+
+    useEffect(() => {
+        if (isCommandPaletteOpen) {
+            return;
+        }
+
+        const focusFirstField = () => {
+            const container = contentRef.current;
+            if (!container) return;
+
+            const active = document.activeElement;
+            if (active && active !== document.body) {
+                return;
+            }
+
+            const selector =
+                'input:not([type="hidden"]):not([disabled]), textarea:not([disabled]), select:not([disabled]), [contenteditable="true"]';
+            const candidate = container.querySelector<HTMLElement>(selector);
+            if (!candidate) return;
+            if (candidate.offsetParent === null) return;
+
+            candidate.focus({ preventScroll: false });
+        };
+
+        const id = window.setTimeout(focusFirstField, 0);
+        return () => window.clearTimeout(id);
+    }, [isCommandPaletteOpen, pathname]);
 
     return (
         <div className={`${jetBrains.className} cyber-page cyber-scroll selection:bg-[#00FF41] selection:text-black`}>
@@ -69,7 +98,10 @@ export function ToolLayout({ children }: ToolLayoutProps) {
                 </div>
             </header>
 
-            <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-10">
+            <div
+                ref={contentRef}
+                className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-10"
+            >
                 {children}
             </div>
         </div>
