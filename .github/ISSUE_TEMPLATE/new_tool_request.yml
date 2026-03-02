@@ -1,0 +1,55 @@
+name: "New Tool Request"
+description: "Propone una nueva herramienta privacy-first"
+title: "[Tool Request]: "
+labels: ["tool-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por proponer una nueva herramienta. DevSwiss prioriza procesamiento local y UX sin friccion.
+  - type: input
+    id: tool-name
+    attributes:
+      label: Nombre de la herramienta
+      placeholder: "Ej: RUT Cleaner Pro"
+    validations:
+      required: true
+  - type: textarea
+    id: tool-utility
+    attributes:
+      label: Utilidad de la herramienta #11 o #12
+      description: "Explica para que sirve, a quien ayuda y por que es valiosa. Referencia el item #11 o #12 si aplica a tu roadmap."
+      placeholder: "Resuelve X problema con Y beneficio en Z contexto..."
+    validations:
+      required: true
+  - type: textarea
+    id: local-processing
+    attributes:
+      label: Procesamiento 100% local
+      description: "Describe como mantendrias el procesamiento local en el navegador."
+      placeholder: "Todo el input se procesa en JS/WASM sin enviar datos a servidores..."
+    validations:
+      required: true
+  - type: textarea
+    id: ux-100ms
+    attributes:
+      label: UX zero-friction + Ley de los 100ms
+      description: "Como garantizas auto-focus y respuestas en menos de 100ms."
+      placeholder: "Auto-focus en input principal, operaciones sin red, feedback inmediato..."
+    validations:
+      required: true
+  - type: textarea
+    id: ai-pedagogy
+    attributes:
+      label: Pedagogia con IA
+      description: "Indica la explicacion tecnica breve que mostraria la herramienta."
+      placeholder: "Explica el algoritmo, tradeoffs, o formula usada..."
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy-confirmation
+    attributes:
+      label: Confirmacion
+      options:
+        - label: "Confirmo que el procesamiento es 100% local y no envia datos a servidores."
+          required: true

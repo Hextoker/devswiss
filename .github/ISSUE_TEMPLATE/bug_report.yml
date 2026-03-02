@@ -1,0 +1,77 @@
+name: "Bug Report"
+description: "Reporta errores en herramientas actuales (ej: validacion de RUT)"
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por el reporte. Si es posible incluye un caso minimo reproducible.
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Herramienta afectada
+      options:
+        - Security Audit
+        - JWT Debugger
+        - CORS Tester
+        - Hash Generator
+        - Regex Lab
+        - JSON Master
+        - SQL Formatter
+        - Base64 & Media Laboratory
+        - RUT Validator
+        - Cron Predictor
+        - Glassmorphism Generator
+        - SVG Optimizer
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Descripcion del problema
+      placeholder: "Ej: RUT 12.345.678-5 se valida como invalido..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      placeholder: |
+        1. Ir a /tools/rut-validator
+        2. Ingresar 12.345.678-5
+        3. Ver error en la validacion
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+      placeholder: "El DV deberia marcarse como valido y formatearse..."
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado actual
+      placeholder: "Se marca invalido y no permite copiar..."
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Errores en consola (si aplica)
+      render: shell
+  - type: input
+    id: environment
+    attributes:
+      label: Entorno
+      description: "Sistema operativo + navegador + version."
+      placeholder: "macOS 14.4, Chrome 122"
+  - type: checkboxes
+    id: privacy-confirmation
+    attributes:
+      label: Confirmacion
+      options:
+        - label: "No adjunte datos sensibles. El procesamiento ocurre localmente."
+          required: true
