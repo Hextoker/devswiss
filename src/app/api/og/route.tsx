@@ -2,15 +2,6 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-interface OGImageOptions {
-    width?: number;
-    height?: number;
-    title?: string;
-    description?: string;
-    accent?: string;
-    socialNetwork?: 'linkedin' | 'facebook' | 'instagram' | 'twitter' | 'generic';
-}
-
 const sizes = {
     generic: { width: 1200, height: 630 },
     linkedin: { width: 1200, height: 627 },
@@ -31,7 +22,7 @@ const normalizeText = (value: string | null, fallback: string, maxLength: number
         }
 
         return trimmed.length > maxLength ? `${trimmed.slice(0, maxLength)}...` : trimmed;
-    } catch (error) {
+    } catch {
         return fallback;
     }
 };
@@ -197,8 +188,11 @@ export async function GET(request: Request) {
         );
         const accentColor = searchParams.get('accent') || '#34d399';
         const socialParam = searchParams.get('social') || 'generic';
+        const validNetworks = ['linkedin', 'facebook', 'instagram', 'twitter', 'generic'] as const;
         const socialNetwork: 'linkedin' | 'facebook' | 'instagram' | 'twitter' | 'generic' = 
-            socialParam as any;
+            validNetworks.includes(socialParam as typeof validNetworks[number]) 
+                ? (socialParam as typeof validNetworks[number])
+                : 'generic';
 
         const size = sizes[socialNetwork];
 

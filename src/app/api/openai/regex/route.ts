@@ -69,7 +69,7 @@ export async function POST(request: Request) {
 
         try {
             new RegExp(pattern);
-        } catch (err) {
+        } catch {
             return NextResponse.json(
                 { error: 'La IA devolvió un patrón inválido para JavaScript.' },
                 { status: 422 }

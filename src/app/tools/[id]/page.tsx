@@ -30,6 +30,7 @@ const toolEmojiMap: Record<string, string> = {
     'cron-predictor': '⏱️',
     'glassmorphism-gen': '🧊',
     'svg-optimizer': '🧊',
+    'image-metadata': '📷',
 };
 
 const toolPageLoaders: Record<string, () => Promise<ToolModule>> = {
@@ -45,6 +46,7 @@ const toolPageLoaders: Record<string, () => Promise<ToolModule>> = {
     'cron-predictor': () => import('@/tools/cron-predictor/page'),
     'glassmorphism-gen': () => import('@/tools/glassmorphism-gen/page'),
     'svg-optimizer': () => import('@/tools/svg-optimizer/page'),
+    'image-metadata': () => import('@/tools/image-metadata/page'),
 };
 
 const toTitleCase = (value: string | undefined) => {

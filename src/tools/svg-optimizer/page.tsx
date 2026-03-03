@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { optimize } from 'svgo/dist/svgo.browser';
 import { ExplainButton } from '@/components/shared/ExplainButton';
 
@@ -13,9 +13,12 @@ const formatBytes = (bytes: number) => {
 };
 
 export default function SVGOptimizerPage() {
-    const hasPrefilled = useRef(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [svgInput, setSvgInput] = useState('');
+    const [svgInput, setSvgInput] = useState(() => {
+        if (typeof window === 'undefined') return '';
+        const params = new URLSearchParams(window.location.search);
+        return params.get('svg') || '';
+    });
     const [optimizedSvg, setOptimizedSvg] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [dragActive, setDragActive] = useState(false);
@@ -115,17 +118,6 @@ export default function SVGOptimizerPage() {
             console.error('Clipboard error', err);
         }
     };
-
-    useEffect(() => {
-        if (hasPrefilled.current) return;
-        if (typeof window === 'undefined') return;
-        const params = new URLSearchParams(window.location.search);
-        const payload = params.get('svg');
-        if (!payload) return;
-        hasPrefilled.current = true;
-        setSvgInput(payload);
-        setOptimizedSvg('');
-    }, []);
 
     return (
         <div className="flex flex-col gap-6">

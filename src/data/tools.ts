@@ -101,6 +101,18 @@ export const tools: ToolMeta[] = [
         keywords: ['json', 'format', 'minify', 'validar', 'lint', 'beautify'],
     },
     {
+        id: 'image-metadata',
+        name: 'Image Metadata Viewer',
+        description:
+            'Visualiza metadatos EXIF locales (HEIC, JPEG, PNG) con privacidad total y sin subir la imagen.',
+        path: '/tools/image-metadata',
+        category: 'Datos',
+        icon: 'json',
+        accent: 'cyan',
+        tagline: 'EXIF local con preview y categorias claras',
+        keywords: ['exif', 'metadata', 'imagen', 'heic', 'jpeg', 'png', 'privacidad', 'local'],
+    },
+    {
         id: 'sql-formatter',
         name: 'SQL Formatter',
         description: 'Formatea queries SQL (Postgres/MySQL) con resaltado de sintaxis local.',

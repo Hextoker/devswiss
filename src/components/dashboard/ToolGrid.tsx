@@ -275,7 +275,7 @@ export function ToolGrid() {
             </div>
 
             <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
-                {orderedTools.map((tool, index) => {
+                {orderedTools.map((tool) => {
                     const Icon = iconMap[tool.icon] ?? Code2;
                     const accent = accentMap[tool.accent];
                     const isFavorite = favorites.includes(tool.id);

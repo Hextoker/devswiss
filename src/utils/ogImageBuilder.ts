@@ -112,7 +112,6 @@ export function generateToolOGMetadata(config: OGImageConfig) {
 export function buildShareUrls(pageUrl: string, config: OGImageConfig) {
     const encodedUrl = encodeURIComponent(pageUrl);
     const encodedTitle = encodeURIComponent(config.title);
-    const encodedDescription = encodeURIComponent(config.description);
 
     return {
         linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,

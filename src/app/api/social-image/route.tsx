@@ -75,7 +75,7 @@ export async function GET(request: Request) {
 }
 
 function renderSocialImage(params: SocialImageParams & { size: { width: number; height: number } }) {
-    const { title, description, toolName, platform, accentColor, size } = params;
+    const { title, description, toolName, platform, accentColor } = params;
 
     // Instagram square format - centered
     if (platform === 'instagram') {
