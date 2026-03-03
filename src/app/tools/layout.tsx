@@ -39,10 +39,9 @@ const getPathnameFromHeaders = async () => {
     }
 };
 
-const buildOgUrl = (title: string, description: string) => {
-    const url = new URL('/api/og', siteUrl);
+const buildOgUrl = (title: string) => {
+    const url = new URL('/api/og', 'https://devswiss.cl');
     url.searchParams.set('title', title);
-    url.searchParams.set('description', description);
     return url.toString();
 };
 
@@ -53,15 +52,20 @@ export async function generateMetadata(): Promise<Metadata> {
     const description =
         toolMeta?.description ??
         'Utilidades enfocadas en seguridad, datos, automatizacion y diseno.';
-    const ogUrl = buildOgUrl(title, description);
+    const ogUrl = buildOgUrl(title);
 
     return {
+        title,
+        description,
         openGraph: {
+            title,
+            description,
             images: [
                 {
                     url: ogUrl,
                     width: 1200,
                     height: 630,
+                    type: 'image/png',
                     alt: `${title} - DevSwiss`,
                 },
             ],

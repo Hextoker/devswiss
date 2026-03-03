@@ -26,7 +26,27 @@ export const metadata: Metadata = {
     default: "DevSwiss",
     template: "%s | DevSwiss",
   },
-  description: "Developer Swiss Army Knife",
+  description:
+    "DevSwiss: La navaja suiza para desarrolladores. Herramientas de utilidad con privacidad total y procesamiento local 100% en el cliente.",
+  openGraph: {
+    title: "DevSwiss",
+    description:
+      "DevSwiss: La navaja suiza para desarrolladores. Herramientas de utilidad con privacidad total y procesamiento local 100% en el cliente.",
+    url: "https://devswiss.cl",
+    siteName: "DevSwiss",
+    images: [
+      {
+        url: "https://devswiss.cl/api/og",
+        width: 1200,
+        height: 630,
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["https://devswiss.cl/api/og"],
+  },
 };
 
 const jsonLd = {
@@ -34,7 +54,7 @@ const jsonLd = {
   "@type": "SoftwareApplication",
   name: "DevSwiss",
   description:
-    "Developer Swiss Army Knife with 100% client-side processing for safe, private utilities.",
+    "DevSwiss: La navaja suiza para desarrolladores. Herramientas de utilidad con privacidad total y procesamiento local 100% en el cliente.",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "Web",
   url: siteUrl,
