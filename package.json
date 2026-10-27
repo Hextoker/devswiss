@@ -2,6 +2,9 @@
   "name": "devswiss",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "^24.22.1"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -30,7 +33,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/argon2-browser": "^1.18.4",
     "@types/crypto-js": "^4.2.2",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/prismjs": "^1.26.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -14,6 +14,13 @@ Este archivo define las reglas que deben respetarse antes de proponer o implemen
 - **Modularidad atómica**: cada herramienta debe ser independiente y no añadir peso innecesario al resto.
 - **Hosting**: despliegue en EC2 con Docker (no S3).
 
+### Runtimes aprobados (rotación 2026-10)
+- **Node**: `24.22.1` — pin exacto en `Dockerfile` (3 stages), `.nvmrc` y `engines` de `package.json`; `@types/node` debe alinearse al major de Node.
+- **PostgreSQL**: `17.11` — solo consume Umami (analytics); la app no tiene dependencias de datos de usuario.
+- **Umami**: `umamisoftware/umami:3.4.1` — desde v3 las imágenes versionadas se publican en Docker Hub (los tags v3 de GHCR no existen).
+- **Python**: sin uso en el repo. Si se introduce tooling Python, usar `3.13.17`.
+- Rotar versiones solo a pins exactos del catálogo aprobado (prohibido `latest`); requiere rebuild + verificación completa y runbook de migración si cambia el major de PostgreSQL.
+
 ## 3) Reglas de navegación y UX
 - El flujo principal es **Command-First** (Command Palette + Quick Actions).
 - Las herramientas deben ser invocables por ruta y por intención desde búsqueda.
